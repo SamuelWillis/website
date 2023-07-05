@@ -31,7 +31,7 @@ defmodule SamuelWillisWeb.ConnCase do
     end
   end
 
-  setup tags do
+  setup _tags do
     # SamuelWillis.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
