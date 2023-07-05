@@ -1,0 +1,3 @@
+#!/bin/sh
+cd -P -- "$(dirname -- "$0")"
+exec ./samuel_willis eval SamuelWillis.Release.migrate
