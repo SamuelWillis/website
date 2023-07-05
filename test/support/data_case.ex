@@ -27,8 +27,8 @@ defmodule SamuelWillis.DataCase do
     end
   end
 
-  setup tags do
-    SamuelWillis.DataCase.setup_sandbox(tags)
+  setup _tags do
+    # SamuelWillis.DataCase.setup_sandbox(tags)
     :ok
   end
 

@@ -10,8 +10,6 @@ defmodule SamuelWillis.Application do
     children = [
       # Start the Telemetry supervisor
       SamuelWillisWeb.Telemetry,
-      # Start the Ecto repository
-      SamuelWillis.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: SamuelWillis.PubSub},
       # Start Finch
