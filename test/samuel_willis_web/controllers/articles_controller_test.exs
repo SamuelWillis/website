@@ -11,7 +11,7 @@ defmodule SamuelWillisWeb.ArticlesControllerTest do
 
   describe "show/2" do
     test "renders successfully", %{conn: conn} do
-      conn = get(conn, ~p"/articles/hello-world")
+      conn = get(conn, ~p"/articles/welcome-to-my-site")
 
       assert html_response(conn, 200)
     end
