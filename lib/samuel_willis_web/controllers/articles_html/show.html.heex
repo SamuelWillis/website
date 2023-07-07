@@ -1,0 +1,10 @@
+<article class="space-y-6">
+  <.header>
+    <%= @article.title %>
+    <:subtitle><%= @article.description %></:subtitle>
+  </.header>
+
+  <section class="space-y-3">
+    <%= raw(@article.body) %>
+  </section>
+</article>

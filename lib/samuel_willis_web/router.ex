@@ -18,6 +18,8 @@ defmodule SamuelWillisWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    resources "/articles", ArticlesController, only: [:index, :show]
   end
 
   # Other scopes may use custom stacks.
