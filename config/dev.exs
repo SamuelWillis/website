@@ -58,7 +58,8 @@ config :samuel_willis, SamuelWillisWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/samuel_willis_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/samuel_willis_web/(controllers|live|components)/.*(ex|heex)$",
+      ~r"priv/posts/*/.*(md)$"
     ]
   ]
 
