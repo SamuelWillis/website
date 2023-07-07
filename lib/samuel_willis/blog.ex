@@ -8,7 +8,8 @@ defmodule SamuelWillis.Blog do
   use NimblePublisher,
     build: Article,
     from: Application.app_dir(:samuel_willis, "priv/articles/**/*.md"),
-    as: :articles
+    as: :articles,
+    highlighters: [:makeup_elixir, :makeup_js]
 
   # The @articles variable is first defined by NimblePublisher.
   # Let's further modify it by sorting all articles by descending date.
