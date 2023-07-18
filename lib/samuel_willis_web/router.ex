@@ -18,6 +18,7 @@ defmodule SamuelWillisWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/about", PageController, :about
 
     resources "/articles", ArticlesController, only: [:index, :show]
   end
