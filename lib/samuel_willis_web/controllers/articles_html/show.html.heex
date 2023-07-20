@@ -1,10 +1,10 @@
-<article class="space-y-6">
-  <.header>
-    <%= @article.title %>
-    <:subtitle><%= @article.description %></:subtitle>
-  </.header>
+<article class="prose prose-zinc prose-pre:bg-[#f0f0f0]">
+  <header>
+    <h1><%= @article.title %></h1>
+    <p class="not-prose text-sm leading-normal text-zinc-600">
+      <%= @article.description %>
+    </p>
+  </header>
 
-  <section class="space-y-3">
-    <%= raw(@article.body) %>
-  </section>
+  <%= raw(@article.body) %>
 </article>
