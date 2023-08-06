@@ -24,4 +24,34 @@ defmodule SamuelWillis.Blog do
   def get_article(id) do
     Enum.find(list_articles(), &(&1.id == id))
   end
+
+  @doc """
+  Finds the article before the provided article.
+
+  Returns `nil` if article is the first article.
+  """
+  def previous_article(%Article{} = article) do
+    articles = list_articles()
+
+    index = Enum.find_index(articles, &(&1.id == article.id))
+
+    Enum.at(articles, index + 1, nil)
+  end
+
+  @doc """
+  Finds the article after the provided article
+
+  Returns `nil` if the article is the last article.
+  """
+  def next_article(%Article{} = article) do
+    articles = list_articles()
+
+    index = Enum.find_index(articles, &(&1.id == article.id))
+
+    if index != 0 do
+      Enum.at(articles, index - 1)
+    else
+      nil
+    end
+  end
 end
