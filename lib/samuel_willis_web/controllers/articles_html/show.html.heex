@@ -1,4 +1,4 @@
-<article class="prose prose-zinc">
+<article class="prose prose-zinc max-w-full">
   <header>
     <h1><%= @article.title %></h1>
     <p class="not-prose text-sm leading-normal text-zinc-600">
@@ -7,4 +7,6 @@
   </header>
 
   <%= raw(@article.body) %>
+
+  <.navigation previous_article={@previous_article} next_article={@next_article} />
 </article>
