@@ -12,6 +12,14 @@ defmodule SamuelWillisWeb.ArticlesController do
   def show(conn, %{"id" => id}) do
     article = Blog.get_article(id)
 
-    render(conn, :show, article: article)
+    previous_article = Blog.previous_article(article)
+
+    next_article = Blog.next_article(article)
+
+    render(conn, :show,
+      article: article,
+      previous_article: previous_article,
+      next_article: next_article
+    )
   end
 end
