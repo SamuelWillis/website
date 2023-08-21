@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :samuel_willis, SamuelWillis.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("DATABASE_USER"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  database: System.get_env("DATABASE_NAME"),
   hostname: "localhost",
-  database: "samuel_willis_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
