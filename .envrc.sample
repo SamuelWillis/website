@@ -1,0 +1,4 @@
+# Database configuration
+export DATABASE_USER=
+export DATABASE_PASSWORD=
+export DATABASE_NAME=

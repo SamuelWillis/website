@@ -8,7 +8,7 @@ primary_region = "yyz"
 kill_signal = "SIGTERM"
 
 [deploy]
-  # release_command = "/app/bin/migrate"
+  release_command = "/app/bin/migrate"
 
 [env]
   PHX_HOST = "samuelwillisdev.fly.dev"

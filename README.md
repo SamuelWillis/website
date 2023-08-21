@@ -1,18 +1,21 @@
 # SamuelWillis
 
-To start your Phoenix server:
+Personal website built with the [Phoenix
+Framework](https://www.phoenixframework.org/)
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## Getting Started
+
+You'll need to have the following things running to work on this codebase:
+
+1. [direnv](#direnv)
+1. [asdf](#asdf) (or Elixir, Erlang, and Node.js)
+1. [Postgres](#postgres)
+
+Assuming the above are installed and running correctly
+
+* Copy `.envrc.sample` to `.envrc` and fill out with your configuration
+* Run `mix setup` to install and setup dependencies
+* Start Phoenix endpoint with `mix phx.server` or inside IEx with
+    `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
