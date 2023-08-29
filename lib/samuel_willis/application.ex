@@ -17,9 +17,9 @@ defmodule SamuelWillis.Application do
       # Start Finch
       {Finch, name: SamuelWillis.Finch},
       # Start the Endpoint (http/https)
-      SamuelWillisWeb.Endpoint
+      SamuelWillisWeb.Endpoint,
       # Start a worker by calling: SamuelWillis.Worker.start_link(arg)
-      # {SamuelWillis.Worker, arg}
+      SamuelWillis.Metrics.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
