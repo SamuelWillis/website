@@ -1,0 +1,13 @@
+<section>
+  <h1>Metrics!</h1>
+
+  <ul :if={Enum.any?(@metrics)}>
+    <li :for={metric <- @metrics}>
+      <%= metric.date %> <%= metric.path %>: <%= metric.visits %>
+    </li>
+  </ul>
+
+  <p :if={Enum.empty?(@metrics)}>
+    No metrics to display
+  </p>
+</section>
