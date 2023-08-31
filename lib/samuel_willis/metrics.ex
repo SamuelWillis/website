@@ -5,6 +5,9 @@ defmodule SamuelWillis.Metrics do
 
   alias SamuelWillis.Repo
   alias SamuelWillis.Metrics.Metric
+  alias SamuelWillis.Metrics.Supervisor
+
+  defdelegate track_metrics(path), to: Supervisor, as: :track_metrics
 
   @doc """
   Upsert a SamuelWillis.Metrics.Metric for the given path
