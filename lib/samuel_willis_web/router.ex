@@ -22,6 +22,7 @@ defmodule SamuelWillisWeb.Router do
     get "/about", PageController, :about
 
     resources "/articles", ArticlesController, only: [:index, :show]
+    resources "/metrics", MetricsController, only: [:index]
   end
 
   # Other scopes may use custom stacks.
