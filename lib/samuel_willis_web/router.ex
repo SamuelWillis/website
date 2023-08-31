@@ -8,7 +8,7 @@ defmodule SamuelWillisWeb.Router do
     plug :put_root_layout, html: {SamuelWillisWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :track_metrics
+    plug SamuelWillisWeb.Plugs.TrackMetrics
   end
 
   pipeline :api do
@@ -44,17 +44,5 @@ defmodule SamuelWillisWeb.Router do
       live_dashboard "/dashboard", metrics: SamuelWillisWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
-  end
-
-  defp track_metrics(conn, _opts) do
-    register_before_send(conn, fn conn ->
-      if conn.status == 200 do
-        path = "/" <> Enum.join(conn.path_info, "/")
-
-        SamuelWillis.Metrics.track_metrics(path)
-      end
-
-      conn
-    end)
   end
 end
