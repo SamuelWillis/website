@@ -2,12 +2,28 @@ defmodule SamuelWillis.Metrics do
   @moduledoc """
   A minimal webpage metrics engine
   """
+  import Ecto.Query, only: [from: 2]
 
   alias SamuelWillis.Repo
   alias SamuelWillis.Metrics.Metric
   alias SamuelWillis.Metrics.Supervisor
 
   defdelegate track_metrics(path), to: Supervisor, as: :track_metrics
+
+  def get_weekly_metrics() do
+    today = Date.utc_today()
+    start_date = Date.add(today, -7)
+
+    query =
+      from m in Metric,
+        where: m.date <= ^today,
+        where: ^start_date <= m.date,
+        order_by: [desc: m.visits]
+
+    query
+    |> Repo.all()
+    |> Enum.group_by(& &1.date)
+  end
 
   @doc """
   Upsert a SamuelWillis.Metrics.Metric for the given path
