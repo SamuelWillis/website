@@ -1,11 +1,16 @@
-<section>
+<section class="w-full space-y-4">
   <h1>Metrics!</h1>
 
-  <ul :if={Enum.any?(@metrics)}>
-    <li :for={metric <- @metrics}>
-      <%= metric.date %> <%= metric.path %>: <%= metric.visits %>
-    </li>
-  </ul>
+  <div :for={{date, metrics} <- @metrics} class="flex gap-4">
+    <h2 class="font-bold"><%= date %></h2>
+
+    <dl class="">
+      <div :for={metric <- metrics} class="flex gap-2">
+        <dt class=""><%= metric.path %>:</dt>
+        <dd><%= metric.visits %></dd>
+      </div>
+    </dl>
+  </div>
 
   <p :if={Enum.empty?(@metrics)}>
     No metrics to display
