@@ -2,7 +2,8 @@
     title: "Stacks in Elixir",
     author: "Samuel Willis",
     description: "Implementing a stack in Elixir",
-    tags: ~w(elixir datastructures code algorithms)
+    tags: ~w(elixir datastructures code algorithms),
+    published: true
 }
 ---
 Stacks are one of the most basic data structures in Computer Science.

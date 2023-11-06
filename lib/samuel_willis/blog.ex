@@ -12,8 +12,9 @@ defmodule SamuelWillis.Blog do
     highlighters: [:makeup_elixir, :makeup_js]
 
   # The @articles variable is first defined by NimblePublisher.
-  # Let's further modify it by sorting all articles by descending date.
-  @articles Enum.sort_by(@articles, & &1.date, {:desc, Date})
+  # Let's further modify it by filtering unpublished articles and sorting all
+  # articles by descending date
+  @articles @articles |> Enum.filter(& &1.published) |> Enum.sort_by(& &1.date, {:desc, Date})
 
   # Let's also get all tags
   @tags @articles |> Enum.flat_map(& &1.tags) |> Enum.uniq() |> Enum.sort()

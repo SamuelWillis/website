@@ -2,7 +2,8 @@
   title: "Journeys in building a website",
   author: "Samuel Willis",
   tags: ~w(projects elixir phoenix),
-  description: "What I did to build a website after numerous false starts."
+  description: "What I did to build a website after numerous false starts.",
+  published: true
 }
 ---
 Several months ago I decided I wanted to build a website for myself again. After
