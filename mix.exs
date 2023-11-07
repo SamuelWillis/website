@@ -46,6 +46,7 @@ defmodule SamuelWillis.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
+      {:makeup, "~> 1.1.0"},
       {:makeup_elixir, "~> 0.16.1"},
       {:makeup_js, "~> 0.1.0"},
       {:nimble_publisher, "~> 1.0"},
