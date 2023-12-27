@@ -102,10 +102,10 @@ However, if the JavaScript package uses simple CSS, it can be imported in
 `app.css`, and tailwind will process it.
 For LeafletJS, this looks like:
 
-\```css
+```css
 # assets/css/app.css
 @import 'leaflet/dist/leaflet.css';
-\```
+```
 
 With this import, the styles are applied correctly.
 
