@@ -38,7 +38,7 @@ defmodule SamuelWillisWeb.Layouts do
         </li>
         <li>
           <.link
-            href="mailto:samuel.w.h.willis@gmail.com?subject=Hey!"
+            href="mailto:hello@samuelwillis.dev=Hey!"
             class="block p-2 font-semibold text-xl rounded-md hover:text-indigo-800 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-0 focus:outline-indigo-500"
           >
             <.icon name="hero-envelope" class="w-10 h-10" />
