@@ -8,5 +8,9 @@
 
   <%= raw(@article.body) %>
 
+  <p class="text-center">
+    <%= Date.to_string(@article.date) %>
+  </p>
+
   <.navigation previous_article={@previous_article} next_article={@next_article} />
 </article>
