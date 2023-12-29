@@ -25,6 +25,11 @@ package and its CSS:
 3. Import CSS into `app.css` and use:
     * `@import '$PACKAGE_NAME/path/to/css/file.css';`
 
+The above will get the styles and JS working for the most part.
+If the depenedency has static assets, like images, that it uses in its styles
+those assets will need to be copied to the appropriate path in `priv/static/`.
+You may also need to configure a custom `Plug.Static`
+
 If you'd like to know more and see an example, feel free to continue reading.
 
 ## Importing a NPM package
@@ -109,7 +114,51 @@ For LeafletJS, this looks like:
 
 With this import, the styles are applied correctly.
 
+## Fixing relative path references to assets in dependency styles
+
+In Leaflet's case, there are image assets referenced via a relative path in the
+CSS.
+Esbuild bundles assets to `priv/static/assets`, so each image request is
+prefixed by `assets/`, which leads to a `404` error.
+
+To solve this, there are two steps:
+
+First, it is necessary to copy the assets to the appropriate directories in
+`priv/static`.
+This enables static serving of the assets.
+
+Second, it is essential to configure the assets to be accessible with the
+`assets/` prefix, as Phoenix's default behavior is to serve static assets from the
+root.
+
+To maintain the default behavior and prevent breaking any existing references to
+assets, a second [Plug.Static](https://hexdocs.pm/plug/Plug.Static.html) can be
+configured.
+
+By adding the following to `endpoint.ex`, the images in `priv/static/images` become
+accessible at paths beginning with `assets/images`:
+
+```elixir
+# lib/your_app_web/endpoint.ex
+plug Plug.Static,
+  at: "/assets",
+  from: {:your_app, "priv/static"},
+  gzip: false,
+  only: ~w(images)
+```
+For clarification, here's a breakdown of the above settings:
+
+* **at: "/assets":** This serves the files at the URL path `/assets/.*`
+* **from: {:your_app, "priv/static"}:** This tells Phoenix to serve files from the
+  `priv/static` directory in your app.
+* **only: ~w(images):** This restricts the serving to only the `images/` directory
+  within `priv/static`
+
+As a result, images stored in `priv/static` are available at both `images/*` and
+`/assets/images/*`
+
 ## Conclusion
+
 Integrating NPM packages into Phoenix LiveView is straightforward once
 understood.
 Part of the challenge was navigating the sparse docs that are split between
