@@ -8,14 +8,16 @@ defmodule SamuelWillisWeb.PageControllerTest do
 
       assert html =~ "Samuel Willis"
 
-      # Assert links to articles appears
+      # Assert links appear
+      assert html =~ "About"
+      assert html =~ "/about"
       assert html =~ "Articles"
       assert html =~ "/articles"
 
       # Assert social links are on screen
       assert html =~ "https://github.com/SamuelWillis"
       assert html =~ "https://www.linkedin.com/in/willissamuel/"
-      assert html =~ "mailto:samuel.w.h.willis@gmail.com"
+      assert html =~ "mailto:hello@samuelwillis.dev"
     end
   end
 end
