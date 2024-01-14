@@ -8,4 +8,8 @@ defmodule SamuelWillisWeb.PageController do
   def about(conn, _params) do
     render(conn, :about)
   end
+
+  def now(conn, _params) do
+    render(conn, :now)
+  end
 end

@@ -20,6 +20,7 @@ defmodule SamuelWillisWeb.Router do
 
     get "/", PageController, :home
     get "/about", PageController, :about
+    get "/now", PageController, :now
 
     resources "/articles", ArticlesController, only: [:index, :show]
     resources "/metrics", MetricsController, only: [:index]
