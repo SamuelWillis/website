@@ -91,13 +91,21 @@ jobs:
           SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
 
   cd:
-    name: Deploy app
+    name: Deploy apps
     needs: [ci]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+
+      - name: Deploy website
+        run: flyctl deploy --remote-only
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_WEBSITE_API_TOKEN }}
+
+      - name: Deploy metrics app
+        run: flyctl deploy --remote-only ./livebook/
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_METRICS_API_TOKEN }}
