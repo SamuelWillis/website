@@ -1,0 +1,33 @@
+<!-- livebook:{"app_settings":{"access_type":"public","slug":"metrics"}} -->
+
+# Website Metrics
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.12.0"}
+])
+```
+
+## Metrics
+
+A very simple display of the site metrics!
+
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiIiLCJjb2RlIjoibWV0cmljcyA9IFNhbXVlbFdpbGxpcy5SZXBvLmFsbChTYW11ZWxXaWxsaXMuTWV0cmljcy5NZXRyaWMpXG5cbkVudW0ubWFwKG1ldHJpY3MsICYgeyYxLmRhdGUsICYxLnBhdGgsICYxLnZpc2l0c30pIiwiY29va2llIjoiIiwiY29va2llX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9DT09LSUUiLCJub2RlIjoic2FtdWVsd2lsbGlzZGV2QGZkYWE6MTo1MjE6YTdiOjg4ZGM6NTkwMjozZjlmOjIiLCJub2RlX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9OT0RFIiwibm9kZV9zZWNyZXRfdmFsdWUiOm51bGwsInVzZV9jb29raWVfc2VjcmV0Ijp0cnVlLCJ1c2Vfbm9kZV9zZWNyZXQiOnRydWV9","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
+
+```elixir
+require Kino.RPC
+node = String.to_atom(System.fetch_env!("LB_WEBSITE_RELEASE_NODE"))
+Node.set_cookie(node, String.to_atom(System.fetch_env!("LB_WEBSITE_RELEASE_COOKIE")))
+
+Kino.RPC.eval_string(
+  node,
+  ~S"""
+  metrics = SamuelWillis.Repo.all(SamuelWillis.Metrics.Metric)
+
+  Enum.map(metrics, & {&1.date, &1.path, &1.visits})
+  """,
+  file: __ENV__.file
+)
+```
+
+<!-- livebook:{"offset":1177,"stamp":{"token":"XCP.YRqOYkKWA-J4TPXew5E5CAdAHtjOyLtOeL6Rvp62c78JVcWo2pz8n1tYvH9STHIwT6zCssWqXGC-ZwamN4DdX1d_HmDrQ6XL4OXmF7sltrcsBpmPd-SXsK9C8_hIwAjAr7RQYQoLdX9-vC9_X_FocbmuvEPtqvSSm0apLUNl3e_BjMvyUjJrnv18Kog9lkjF","version":2}} -->
