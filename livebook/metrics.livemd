@@ -4,30 +4,85 @@
 
 ```elixir
 Mix.install([
-  {:kino, "~> 0.12.0"}
+  {:kino, "~> 0.12.0"},
+  {:vega_lite, "~> 0.1.6"},
+  {:kino_vega_lite, "~> 0.1.10"},
+  {:kino_explorer, "~> 0.1.11"}
 ])
 ```
 
-## Metrics
+## Daily metrics
 
-A very simple display of the site metrics!
-
-<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiIiLCJjb2RlIjoibWV0cmljcyA9IFNhbXVlbFdpbGxpcy5SZXBvLmFsbChTYW11ZWxXaWxsaXMuTWV0cmljcy5NZXRyaWMpXG5cbkVudW0ubWFwKG1ldHJpY3MsICYgeyYxLmRhdGUsICYxLnBhdGgsICYxLnZpc2l0c30pIiwiY29va2llIjoiIiwiY29va2llX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9DT09LSUUiLCJub2RlIjoic2FtdWVsd2lsbGlzZGV2QGZkYWE6MTo1MjE6YTdiOjg4ZGM6NTkwMjozZjlmOjIiLCJub2RlX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9OT0RFIiwibm9kZV9zZWNyZXRfdmFsdWUiOm51bGwsInVzZV9jb29raWVfc2VjcmV0Ijp0cnVlLCJ1c2Vfbm9kZV9zZWNyZXQiOnRydWV9","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJtZXRyaWNzIiwiY29kZSI6ImltcG9ydCBFY3RvLlF1ZXJ5XG5cbmFsaWFzIFNhbXVlbFdpbGxpcy5NZXRyaWNzLk1ldHJpY1xuYWxpYXMgU2FtdWVsV2lsbGlzLlJlcG9cblxucXVlcnkgPSBmcm9tIG0gaW4gTWV0cmljLFxuICBvcmRlcl9ieTogW2Rlc2M6IG0uZGF0ZV1cblxucXVlcnlcbnw+IFJlcG8uYWxsKClcbnw+IEVudW0ubWFwKCYle2RhdGU6ICYxLmRhdGUsIHBhdGg6ICYxLnBhdGgsIHZpc2l0czogJjEudmlzaXRzfSkiLCJjb29raWUiOiIiLCJjb29raWVfc2VjcmV0IjoiV0VCU0lURV9SRUxFQVNFX0NPT0tJRSIsIm5vZGUiOiIiLCJub2RlX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9OT0RFIiwibm9kZV9zZWNyZXRfdmFsdWUiOiJ3ZWJzaXRlQHNhbXVlbHMtTWFjQm9vay1Qcm8iLCJ1c2VfY29va2llX3NlY3JldCI6dHJ1ZSwidXNlX25vZGVfc2VjcmV0Ijp0cnVlfQ","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 require Kino.RPC
 node = String.to_atom(System.fetch_env!("LB_WEBSITE_RELEASE_NODE"))
 Node.set_cookie(node, String.to_atom(System.fetch_env!("LB_WEBSITE_RELEASE_COOKIE")))
 
-Kino.RPC.eval_string(
-  node,
-  ~S"""
-  metrics = SamuelWillis.Repo.all(SamuelWillis.Metrics.Metric)
+metrics =
+  Kino.RPC.eval_string(
+    node,
+    ~S"""
+    import Ecto.Query
 
-  Enum.map(metrics, & {&1.date, &1.path, &1.visits})
-  """,
-  file: __ENV__.file
-)
+    alias SamuelWillis.Metrics.Metric
+    alias SamuelWillis.Repo
+
+    query = from m in Metric,
+      order_by: [desc: m.date]
+
+    query
+    |> Repo.all()
+    |> Enum.map(&%{date: &1.date, path: &1.path, visits: &1.visits})
+    """,
+    file: __ENV__.file
+  )
 ```
 
-<!-- livebook:{"offset":1154,"stamp":{"token":"XCP.kf9QrO5Zgl53BwwDYQGpnipdDkbnPkDSFLz00J7f4vXielEhmNsQz62yo1njNzGpQK6N0wa74HXym6svqx23svQdDvmG_TXBDmxFIHyw1gQBewVQC2dXQ5pfLofaFtXzPDCSetBk7-SX-xFxyTcwQJis1bdvaHLt36pHa0viMGTy6ZxLubSQjbOZV7dnugXp","version":2}} -->
+## Most popular routes
+
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJ0b3RhbF92aXNpdHNfcGVyX3BhdGgiLCJjb2xsZWN0Ijp0cnVlLCJkYXRhX2ZyYW1lIjoibWV0cmljcyIsImRhdGFfZnJhbWVfYWxpYXMiOiJFbGl4aXIuRXhwbG9yZXIuRGF0YUZyYW1lIiwiaXNfZGF0YV9mcmFtZSI6ZmFsc2UsIm1pc3NpbmdfcmVxdWlyZSI6IkVsaXhpci5FeHBsb3Jlci5EYXRhRnJhbWUiLCJvcGVyYXRpb25zIjpbeyJhY3RpdmUiOnRydWUsImNvbHVtbnMiOlsicGF0aCJdLCJkYXRhX29wdGlvbnMiOnsiZGF0ZSI6ImRhdGUiLCJwYXRoIjoic3RyaW5nIiwidmlzaXRzIjoiaW50ZWdlciJ9LCJvcGVyYXRpb25fdHlwZSI6Imdyb3VwX2J5In0seyJhY3RpdmUiOnRydWUsImNvbHVtbnMiOlsidmlzaXRzIl0sImRhdGFfb3B0aW9ucyI6eyJkYXRlIjoiZGF0ZSIsInBhdGgiOiJzdHJpbmciLCJ2aXNpdHMiOiJpbnRlZ2VyIn0sIm9wZXJhdGlvbl90eXBlIjoic3VtbWFyaXNlIiwicXVlcnkiOiJzdW0ifSx7ImFjdGl2ZSI6dHJ1ZSwiY29sdW1uIjoicGF0aCIsImRhdGFfb3B0aW9ucyI6eyJwYXRoIjoic3RyaW5nIiwidmlzaXRzX3N1bSI6ImludGVnZXIifSwiZGF0YWxpc3QiOlsiLyIsIi9hYm91dCIsIi9ub3ciLCIvYXJ0aWNsZXMvMjAyMy11c2luZy1KUy1wYWNrYWdlcy1pbi1waG9lbml4LWxpdmV2aWV3IiwiL2FydGljbGVzIiwiL2FydGljbGVzL3dlbGNvbWUtdG8tbXktc2l0ZSIsIi9hcnRpY2xlcy9idWlsZGluZy1hLWJsb2ctd2l0aC1uaW1ibGUtcHVibGlzaGVyIiwiL2FydGljbGVzLzIwMjMtdXNpbmctbGVhZmxldC1qcy13aXRoLUxpdmVWaWV3IiwiL2FydGljbGVzL2FkZGluZy1hcnRpY2xlLW5hdmlnYXRpb24iLCIvYXJ0aWNsZXMvYWRkaW5nLW1ldHJpY3MiXSwiZmlsdGVyIjoibm90IGVxdWFsIiwibWVzc2FnZSI6bnVsbCwib3BlcmF0aW9uX3R5cGUiOiJmaWx0ZXJzIiwidHlwZSI6InN0cmluZyIsInZhbHVlIjoibWV0cmljcyJ9LHsiYWN0aXZlIjp0cnVlLCJkYXRhX29wdGlvbnMiOnsicGF0aCI6InN0cmluZyIsInZpc2l0c19zdW0iOiJpbnRlZ2VyIn0sImRpcmVjdGlvbiI6ImRlc2MiLCJvcGVyYXRpb25fdHlwZSI6InNvcnRpbmciLCJzb3J0X2J5IjoidmlzaXRzX3N1bSJ9XX0","chunks":null,"kind":"Elixir.KinoExplorer.DataTransformCell","livebook_object":"smart_cell"} -->
+
+```elixir
+require Explorer.DataFrame
+
+total_visits_per_path =
+  metrics
+  |> Explorer.DataFrame.new(lazy: true)
+  |> Explorer.DataFrame.group_by("path")
+  |> Explorer.DataFrame.summarise(visits_sum: sum(visits))
+  |> Explorer.DataFrame.filter(path != "metrics")
+  |> Explorer.DataFrame.arrange(desc: visits_sum)
+  |> Explorer.DataFrame.collect()
+```
+
+## Visits Per Day
+
+<!-- livebook:{"attrs":"eyJjaGFydF90aXRsZSI6IlZpc2l0cyBwZXIgZGF5IiwiaGVpZ2h0IjozMDAsImxheWVycyI6W3siYWN0aXZlIjp0cnVlLCJjaGFydF90eXBlIjoicnVsZSIsImNvbG9yX2ZpZWxkIjoicGF0aCIsImNvbG9yX2ZpZWxkX2FnZ3JlZ2F0ZSI6bnVsbCwiY29sb3JfZmllbGRfYmluIjpudWxsLCJjb2xvcl9maWVsZF9zY2FsZV9zY2hlbWUiOm51bGwsImNvbG9yX2ZpZWxkX3R5cGUiOiJub21pbmFsIiwiZGF0YV92YXJpYWJsZSI6Im1ldHJpY3MiLCJnZW9kYXRhX2NvbG9yIjoiYmx1ZSIsImxhdGl0dWRlX2ZpZWxkIjpudWxsLCJsb25naXR1ZGVfZmllbGQiOm51bGwsInhfZmllbGQiOiJkYXRlIiwieF9maWVsZF9hZ2dyZWdhdGUiOm51bGwsInhfZmllbGRfYmluIjpudWxsLCJ4X2ZpZWxkX3NjYWxlX3R5cGUiOm51bGwsInhfZmllbGRfdHlwZSI6InRlbXBvcmFsIiwieV9maWVsZCI6InZpc2l0cyIsInlfZmllbGRfYWdncmVnYXRlIjpudWxsLCJ5X2ZpZWxkX2JpbiI6bnVsbCwieV9maWVsZF9zY2FsZV90eXBlIjpudWxsLCJ5X2ZpZWxkX3R5cGUiOiJxdWFudGl0YXRpdmUifV0sInZsX2FsaWFzIjoiRWxpeGlyLlZlZ2FMaXRlIiwid2lkdGgiOjcwMH0","chunks":null,"kind":"Elixir.KinoVegaLite.ChartCell","livebook_object":"smart_cell"} -->
+
+```elixir
+VegaLite.new(width: 700, height: 300, title: "Visits per day")
+|> VegaLite.data_from_values(metrics, only: ["date", "visits", "path"])
+|> VegaLite.mark(:rule)
+|> VegaLite.encode_field(:x, "date", type: :temporal)
+|> VegaLite.encode_field(:y, "visits", type: :quantitative)
+|> VegaLite.encode_field(:color, "path", type: :nominal)
+```
+
+## Busiest Days
+
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJ0b3RhbF92aWV3c19wZXJfZGF5IiwiY29sbGVjdCI6dHJ1ZSwiZGF0YV9mcmFtZSI6Im1ldHJpY3MiLCJkYXRhX2ZyYW1lX2FsaWFzIjoiRWxpeGlyLkV4cGxvcmVyLkRhdGFGcmFtZSIsImlzX2RhdGFfZnJhbWUiOmZhbHNlLCJtaXNzaW5nX3JlcXVpcmUiOm51bGwsIm9wZXJhdGlvbnMiOlt7ImFjdGl2ZSI6dHJ1ZSwiY29sdW1ucyI6WyJkYXRlIl0sImRhdGFfb3B0aW9ucyI6eyJkYXRlIjoiZGF0ZSIsInBhdGgiOiJzdHJpbmciLCJ2aXNpdHMiOiJpbnRlZ2VyIn0sIm9wZXJhdGlvbl90eXBlIjoiZ3JvdXBfYnkifSx7ImFjdGl2ZSI6dHJ1ZSwiY29sdW1ucyI6WyJ2aXNpdHMiXSwiZGF0YV9vcHRpb25zIjp7ImRhdGUiOiJkYXRlIiwicGF0aCI6InN0cmluZyIsInZpc2l0cyI6ImludGVnZXIifSwib3BlcmF0aW9uX3R5cGUiOiJzdW1tYXJpc2UiLCJxdWVyeSI6InN1bSJ9LHsiYWN0aXZlIjp0cnVlLCJjb2x1bW4iOiJkYXRlIiwiZGF0YV9vcHRpb25zIjp7ImRhdGUiOiJkYXRlIiwidmlzaXRzX3N1bSI6ImludGVnZXIifSwibWVzc2FnZSI6bnVsbCwib3BlcmF0aW9uX3R5cGUiOiJmaWxsX21pc3NpbmciLCJzY2FsYXIiOm51bGwsInN0cmF0ZWd5IjoiZm9yd2FyZCIsInR5cGUiOiJkYXRlIn0seyJhY3RpdmUiOnRydWUsImRhdGFfb3B0aW9ucyI6eyJkYXRlIjoiZGF0ZSIsInZpc2l0c19zdW0iOiJpbnRlZ2VyIn0sImRpcmVjdGlvbiI6ImRlc2MiLCJvcGVyYXRpb25fdHlwZSI6InNvcnRpbmciLCJzb3J0X2J5IjoidmlzaXRzX3N1bSJ9XX0","chunks":null,"kind":"Elixir.KinoExplorer.DataTransformCell","livebook_object":"smart_cell"} -->
+
+```elixir
+total_views_per_day =
+  metrics
+  |> Explorer.DataFrame.new(lazy: true)
+  |> Explorer.DataFrame.group_by("date")
+  |> Explorer.DataFrame.summarise(visits_sum: sum(visits))
+  |> Explorer.DataFrame.mutate(date: fill_missing(date, :forward))
+  |> Explorer.DataFrame.arrange(desc: visits_sum)
+  |> Explorer.DataFrame.collect()
+```
+
+<!-- livebook:{"offset":6246,"stamp":{"token":"XCP.bOakR2Pbu7xqXaJYy-UfKi_ObcgqmqFTR91hI2mQB9W7so2rujntpmFf2Nn9Dk8-Q5jKWguDI2RLlfy8gGtYvT7M_uK5Cn-khPSWKNDEm_nwMqp_3UFQ6kHP2SoZWM77-_Bt35zy2gFw5S-6z0v9j004cvEuCIpeo44","version":2}} -->
