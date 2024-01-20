@@ -1,4 +1,4 @@
-<!-- livebook:{"app_settings":{"access_type":"public","slug":"metrics"}} -->
+<!-- livebook:{"app_settings":{"slug":"metrics"}} -->
 
 # Website Metrics
 
@@ -30,4 +30,4 @@ Kino.RPC.eval_string(
 )
 ```
 
-<!-- livebook:{"offset":1177,"stamp":{"token":"XCP.YRqOYkKWA-J4TPXew5E5CAdAHtjOyLtOeL6Rvp62c78JVcWo2pz8n1tYvH9STHIwT6zCssWqXGC-ZwamN4DdX1d_HmDrQ6XL4OXmF7sltrcsBpmPd-SXsK9C8_hIwAjAr7RQYQoLdX9-vC9_X_FocbmuvEPtqvSSm0apLUNl3e_BjMvyUjJrnv18Kog9lkjF","version":2}} -->
+<!-- livebook:{"offset":1154,"stamp":{"token":"XCP.kf9QrO5Zgl53BwwDYQGpnipdDkbnPkDSFLz00J7f4vXielEhmNsQz62yo1njNzGpQK6N0wa74HXym6svqx23svQdDvmG_TXBDmxFIHyw1gQBewVQC2dXQ5pfLofaFtXzPDCSetBk7-SX-xFxyTcwQJis1bdvaHLt36pHa0viMGTy6ZxLubSQjbOZV7dnugXp","version":2}} -->
