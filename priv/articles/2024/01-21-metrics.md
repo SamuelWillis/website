@@ -36,7 +36,8 @@ With that out of the way, lets start.
 
 ## Getting started
 
-To get started [install Livebook Desktop locally](https://livebook.dev/#install).
+To get started [install Livebook Desktop locally](https://livebook.dev/#install)
+if you haven't already.
 The local instance of Livebook will be used to connect to a local development
 server and validate our Livebook app works before deploying to Fly.io.
 
@@ -45,16 +46,23 @@ root of your Phoenix project.
 
 Open up a new Livebook in this directory and save it.
 
-To start, add an `Elixir` cell that will render some markup in our deployed
-application:
+In order to make the data somewhat consumable and provide the user some inputs
+to manipulate what is displayed the [Kino](https://hexdocs.pm/kino/Kino.html),
+[KinoExplorer](https://hexdocs.pm/kino_explorer/Kino.Explorer.html), and
+[KinoVegaLite](https://hexdocs.pm/kino_vega_lite/Kino.VegaLite.html)
+dependencies will be needed.
+
+`Kino` will handle I/O, `KinoExplorer` will enable rendering data from
+`Explorer.DataFrames`, and `KinoVegaLite` will handle charting the data.
+
+Add the following to the Livebook set up block:
 
 ```elixir
-Kino.Shorts.markdown("""
-# Website Analytics
-
-## Load metrics
-Load the metrics from website database
-""")
+Mix.install([
+  {:kino, "~> 0.12.0"},
+  {:kino_vega_lite, "~> 0.1.10"},
+  {:kino_explorer, "~> 0.1.11"}
+])
 ```
 
 ## Getting Metrics from remote server
@@ -118,13 +126,171 @@ Here's an image showing the cell and its set up:
 
 ![alt Smart Remote Execution Cell image](/images/articles/2024/01/smart-cell.png)
 
-## Creating a chart
+Finally, lets provide some context for the user about what is going on.
+Above the `Smart Remote Execution Cell` add an Elixir block and have it render
+some markup like so:
 
-- Create a chart
-- Reduce the time duration
-- Setting up an input to select some options and change the chart
+```elixir
+Kino.Shorts.markdown("""
+# Website Analytics
+
+## Load metrics
+Load the metrics from website database
+""")
+```
 
 ## Creating a table
 
-- Creating a table
-- Reduce the
+Now that the Metrics are loaded, they need formatting into something that can be
+easily read.
+
+As a simple starting example, lets build a table displaying the date and the
+total visits that day.
+
+To start, add an Elixir block and render some markdown for the user:
+
+```elixir
+Kino.Shorts.markdown("""
+## Daily visits
+Table showing the visits per day
+""")
+```
+
+The table itself can be trivially built with the `Smart Data Transformation`
+cell but it's also very simple to do with `Explorer` so lets add a new Elixir
+block and get started.
+
+```elixir
+require Explorer.DataFrame
+
+# Create a new DataFrame out of the metrics
+metrics_df = Explorer.DataFrame.new(metrics)
+
+# Group by 'date', aggregate 'visits', and sort by desc dates
+metrics_df
+|> Explorer.DataFrame.group_by([:date])
+|> Explorer.DataFrame.summarise(total_visits: sum(visits))
+|> Explorer.DataFrame.sort_by(desc: date)
+```
+
+This will output a formatted table that can be sorted by the date or visits
+column!
+
+## Creating a chart
+
+For a more complicated example, lets create a chart that shows the number of
+vists per day, broken down by path.
+
+To further the interactivity, lets allow the user to choose to select today's,
+the last seven days, and last months site visits.
+
+First a `Kino` input will be needed along with a header.
+
+Add a new elixir block with the following:
+
+```elixir
+# Add some markdown and render it.
+markdown = Kino.Shorts.markdown("""
+## Daily visits by path
+Chart displaying the number of visits per day, broken down by path visited.
+""")
+Kino.render(markdown)
+
+# Set up select options
+today = Date.utc_today()
+seven_days_ago = Date.add(today, -8)
+thirty_days_ago = Date.add(today, -31)
+options = [{today, "Today"}, {seven_days_ago, "Last seven days"}, {thirty_days_ago, "Last 30 days"}]
+
+# Create a select input
+time_period_input = Kino.Input.select("Time period", options, default: seven_days_ago)
+
+# Render the select
+Kino.render(time_period_input)
+```
+
+This will render a select input on the page that allows selecting the time
+range.
+
+Now we need to take the selected time range and find the relevant metrics.
+
+```elixir
+# Get the selected date range
+time_period_selected = Kino.Input.read(time_period_input)
+
+# Find the relevant metrics
+metrics_from_time_period = Enum.filter(
+  metrics,
+  & Date.compare(&1.date, time_period_selected) == :gt
+)
+```
+
+The `metrics_from_time_period` variable will contain all the metrics for the
+days in the date range, however it's possible there's missing days if there were
+no site visits.
+
+So for our chart to display a full date range some backfilling of dates will be
+needed.
+
+```elixir
+# Create a DataFrame containing all dates in the time period
+# Set each date to have a default value that will render nothing in the chart.
+date_range_df =
+  time_period_selected
+  |> Date.add(1)
+  |> Date.range(Date.utc_today())
+  |> Enum.map(& %{date: &1, path: "/", visits: 0})
+  |> Explorer.DataFrame.new()
+
+# Create a DataFrame consisting of metrics from time period
+metrics_from_time_period_df = Explorer.DataFrame.new(metrics_from_time_period)
+
+# Concatinate the two dataframes, preferring existing entries in the
+# metrics_from_time_period_df
+metrics_from_time_period_df  = Explorer.DataFrame.concat_rows(
+  metrics_from_time_period_df,
+  date_range_df
+)
+```
+
+Now, we have a DataFrame containing the metrics for the day or a default value
+if there are no metrics for a specific date.
+
+This DataFrame can now be turned into a lovely chart with VegaLite:
+
+```elixir
+VegaLite.new(width: 700, height: 500)
+|> VegaLite.data_from_values(metrics_from_time_period_data_frame)
+|> VegaLite.mark(:bar)
+|> VegaLite.encode_field(:x, "date", type: :ordinal)
+|> VegaLite.encode_field(:y, "visits", type: :quantitative)
+|> VegaLite.encode_field(:color, "path")
+```
+
+Now the chart will render based on the selected time period when the app is
+revaluated.
+
+We now have a simple Livebook application that will render data in a consumable
+form. This is only the start and there's plenty of refining that could be done,
+but for now it's good enough!
+
+## Deploying to Fly.io
+
+Deploying this to Fly.io is super simple.
+
+First, get the generated Dockerfile from Fly.io.
+This is done by clicking the rocket icon, in the side bar then clicking the `→
+Deploy with Docker` link.
+
+From there set the clustering configuration to `Fly.io` and save the generated
+Dockerfile alongside your notebook.
+
+Open up the Dockerfile in your editor and remove the lines that specify the
+`LB_REMOTE_NODE_NAME` and `LB_REMOTE_COOKIE` as their values will need to be
+adjusted and saved as runtime variables in Fly.io.
+
+The `LIVEBOOK_COOKIE` and `LIVEBOOK_SECRET_KEY_BASE` can also be removed but
+make sure to store their values later as they will also need to be configured as
+secrets in Fly.io.
+
+

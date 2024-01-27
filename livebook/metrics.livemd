@@ -5,7 +5,6 @@
 ```elixir
 Mix.install([
   {:kino, "~> 0.12.0"},
-  {:vega_lite, "~> 0.1.6"},
   {:kino_vega_lite, "~> 0.1.10"},
   {:kino_explorer, "~> 0.1.11"}
 ])
@@ -51,7 +50,28 @@ metrics =
   )
 ```
 
-## Daily visits by path
+## Table of path visits
+
+```elixir
+Kino.Shorts.markdown("""
+## Daily visits
+Table showing the visits per day
+""")
+```
+
+```elixir
+require Explorer.DataFrame
+
+metrics_df = Explorer.DataFrame.new(metrics)
+
+# Group by 'date' and aggregate 'visits'
+metrics_df
+|> Explorer.DataFrame.group_by([:date])
+|> Explorer.DataFrame.summarise(total_visits: sum(visits))
+|> Explorer.DataFrame.sort_by(desc: date)
+```
+
+## Chart visits per path
 
 ```elixir
 markdown =
@@ -89,7 +109,7 @@ metrics_from_time_period =
   )
 
 # Create a DataFrame containing all dates in the time period
-date_range_data_frame =
+date_range_df =
   time_period_selected
   |> Date.add(1)
   |> Date.range(Date.utc_today())
@@ -97,21 +117,21 @@ date_range_data_frame =
   |> Explorer.DataFrame.new()
 
 # Create a DataFrame consisting of metrics from time period
-metrics_from_time_period_data_frame = Explorer.DataFrame.new(metrics_from_time_period)
+metrics_from_time_period_df = Explorer.DataFrame.new(metrics_from_time_period)
 
 # Concatinate the two dataframes
-metrics_from_time_period_data_frame =
+metrics_from_time_period_df =
   Explorer.DataFrame.concat_rows(
-    metrics_from_time_period_data_frame,
-    date_range_data_frame
+    metrics_from_time_period_df,
+    date_range_df
   )
 
 VegaLite.new(width: 700, height: 500)
-|> VegaLite.data_from_values(metrics_from_time_period_data_frame)
+|> VegaLite.data_from_values(metrics_from_time_period_df)
 |> VegaLite.mark(:bar)
 |> VegaLite.encode_field(:x, "date", type: :ordinal)
 |> VegaLite.encode_field(:y, "visits", type: :quantitative)
 |> VegaLite.encode_field(:color, "path")
 ```
 
-<!-- livebook:{"offset":3264,"stamp":{"token":"XCP.7YOaWx3AmFGl97m2kQG_YQZbObEFzgAe4jT6cSCi6i4Ch1Oe4wMGV4e0HU_V0wNndl1JVsY7vvsqbxAEj5XpOqAEmTdhc-mj_iZI6pfij0ZZT1Ij3knIp9h__GLopNfu0MYB8p0jzhpSAm-Hw8y6Wwgjym0j50V_gGGMESv8BTEd4Xj7tSvl9eqWOqYQ3Dnk0ik-gKyiy1iHMKqCZ8KQVNpXn3zA-PDWqkjTrK6GJk8hWvCuZMiraWsSTNeGoQ","version":2}} -->
+<!-- livebook:{"offset":3590,"stamp":{"token":"XCP.2nfhEjTohIfXuHfkuKIJvHA5dD-VlTsX3LP7jSMUnGjZXBgYMtHmNHx6q8AJdfdUiaHXuJR25IkFV537PTdj9dZ_bX6gOTLBl9IRhh8qsaaaKEx5V6zaspLtX5dYn7-L0woaYKrAZiEU_Mv5uH3iBXODOc9KlYEmRj97vX4DrvCPuRv-nlHMoDNd23uLh7h0hbeDzKJABaRvswY4c666LJrjkcwTT7EUE8mWC8H8ApOBWVv6Tk1Owr4Qb5pbYg","version":2}} -->
