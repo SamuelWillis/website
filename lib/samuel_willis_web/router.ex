@@ -9,6 +9,7 @@ defmodule SamuelWillisWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug SamuelWillisWeb.Plugs.TrackMetrics
+    plug SamuelWillisWeb.Plugs.AssignPageVisits
   end
 
   pipeline :api do
