@@ -9,6 +9,26 @@ defmodule SamuelWillis.MetricsTest do
 
   @path "/test/path"
 
+  describe "get_path_visits/1" do
+    test "returns count of visits" do
+      today = Date.utc_today()
+      yesterday = Date.add(today, -1)
+
+      Repo.insert!(%Metric{date: today, path: @path, visits: 5})
+      Repo.insert!(%Metric{date: yesterday, path: @path, visits: 5})
+
+      visits = Metrics.get_path_visits(@path)
+
+      assert visits == 10
+    end
+
+    test "returns 0 for path without visits" do
+      visits = Metrics.get_path_visits(@path)
+
+      assert visits === 0
+    end
+  end
+
   describe "get_weekly_metrics/0" do
     test "returns metrics within the last seven days" do
       today = Date.utc_today()

@@ -10,6 +10,15 @@ defmodule SamuelWillis.Metrics do
 
   defdelegate track_metrics(path), to: Supervisor, as: :track_metrics
 
+  @spec get_path_visits(String.t()) :: integer()
+  def get_path_visits(path) do
+    query =
+      from m in Metric,
+        where: m.path == ^path
+
+    query |> Repo.aggregate(:sum, :visits) || 0
+  end
+
   def get_weekly_metrics() do
     today = Date.utc_today()
     start_date = Date.add(today, -7)
