@@ -4,10 +4,25 @@ defmodule SamuelWillisWeb.Layouts do
 
   embed_templates "layouts/*"
 
+  attr :visits, :integer, required: true
+
+  def page_visits(assigns) do
+    ~H"""
+    <aside class="flex items-center space-x-2">
+      <p>
+        Page Views:
+        <span class="bg-gray-100 text-gray-800 font-mono px-2 py-1 rounded">
+          <%= @visits %>
+        </span>
+      </p>
+    </aside>
+    """
+  end
+
   def social_links(assigns) do
     ~H"""
     <nav>
-      <ul class="flex justify-center mt-4 p-4 gap-x-5">
+      <ul class="flex justify-center gap-x-5">
         <li>
           <.link
             href="https://github.com/SamuelWillis"
