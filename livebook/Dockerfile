@@ -1,4 +1,4 @@
-FROM ghcr.io/livebook-dev/livebook:0.12.1
+FROM ghcr.io/livebook-dev/livebook:0.13.3
 
 # Apps configuration
 ENV LIVEBOOK_APPS_PATH "/apps"
