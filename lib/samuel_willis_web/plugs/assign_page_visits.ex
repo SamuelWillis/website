@@ -2,7 +2,7 @@ defmodule SamuelWillisWeb.Plugs.AssignPageVisits do
   @moduledoc """
   AssignPageVisits Plug
 
-  Responsible for ensuring page_visits is assigned
+  Responsible for ensuring page_visits is assigned on static HTML requests
   """
   import Plug.Conn
 
