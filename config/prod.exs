@@ -6,6 +6,11 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :samuel_willis, SamuelWillisWeb.Endpoint,
+  force_ssl: [
+    hsts: true,
+    host: nil,
+    rewrite_on: [:x_forwarded_host, :x_forwarded_port, :x_forwarded_proto]
+  ],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Configures Swoosh API Client
