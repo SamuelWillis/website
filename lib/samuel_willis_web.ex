@@ -52,7 +52,8 @@ defmodule SamuelWillisWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {SamuelWillisWeb.Layouts, :app}
+        layout: {SamuelWillisWeb.Layouts, :app},
+        container: {:div, class: "h-screen flex flex-col"}
 
       unquote(html_helpers())
     end
