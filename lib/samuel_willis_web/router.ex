@@ -19,18 +19,15 @@ defmodule SamuelWillisWeb.Router do
   scope "/", SamuelWillisWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-    get "/about", PageController, :about
-    get "/now", PageController, :now
+    live_session :default, on_mount: SamuelWillisWeb.Hooks.AssignPageVisits do
+      live "/", HomeLive, :index
+      live "/about", AboutLive, :about
+      live "/now", NowLive, :now
+    end
 
     resources "/articles", ArticlesController, only: [:index, :show]
     resources "/metrics", MetricsController, only: [:index]
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", SamuelWillisWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:samuel_willis, :dev_routes) do
