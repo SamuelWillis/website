@@ -43,7 +43,7 @@ defmodule SamuelWillisWeb do
         layouts: [html: SamuelWillisWeb.Layouts]
 
       import Plug.Conn
-      import SamuelWillisWeb.Gettext
+      use Gettext, backend: SamuelWillisWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -86,7 +86,7 @@ defmodule SamuelWillisWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import SamuelWillisWeb.CoreComponents
-      import SamuelWillisWeb.Gettext
+      use Gettext, backend: SamuelWillisWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
