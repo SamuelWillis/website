@@ -1,6 +1,8 @@
 defmodule SamuelWillisWeb.Router do
   use SamuelWillisWeb, :router
 
+  alias SamuelWillisWeb.Hooks
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -8,7 +10,6 @@ defmodule SamuelWillisWeb.Router do
     plug :put_root_layout, html: {SamuelWillisWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug SamuelWillisWeb.Plugs.TrackMetrics
     plug SamuelWillisWeb.Plugs.AssignPageVisits
   end
 
@@ -19,7 +20,7 @@ defmodule SamuelWillisWeb.Router do
   scope "/", SamuelWillisWeb do
     pipe_through :browser
 
-    live_session :default, on_mount: SamuelWillisWeb.Hooks.AssignPageVisits do
+    live_session :default, on_mount: [Hooks.TrackMetrics, Hooks.AssignPageVisits] do
       live "/", HomeLive, :index
       live "/about", AboutLive, :about
       live "/now", NowLive, :now
