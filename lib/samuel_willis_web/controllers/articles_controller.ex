@@ -3,6 +3,8 @@ defmodule SamuelWillisWeb.ArticlesController do
 
   alias SamuelWillis.Blog
 
+  plug SamuelWillisWeb.Plugs.TrackMetrics
+
   def index(conn, _params) do
     articles = Blog.list_articles()
 
