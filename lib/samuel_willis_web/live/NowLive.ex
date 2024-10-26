@@ -14,18 +14,19 @@ defmodule SamuelWillisWeb.NowLive do
       </p>
       <ul>
         <li>
-          Training to ride the
+          Practicing Yoga 🧘‍♂️
+        </li>
+        <li>
+          Avoiding bicycles after completing the
           <.link href="https://www.bcepic1000.com/" rel="noreferrer" target="_blank">BC Epic</.link>
+          with my brother
         </li>
         <li>
-          Leaning into enjoying yoga 🧘‍♂️
-        </li>
-        <li>
-          Modifying a 1972 Harley-Davidson XLCH
+          Building a vintage chopper in my garage out of a 1952 Harley-Davidson FLH
         </li>
       </ul>
       <p class="not-prose text-sm leading-normal text-zinc-600">
-        Updated Jun 7, 2024
+        Updated Oct 26, 2024
       </p>
     </article>
     """
