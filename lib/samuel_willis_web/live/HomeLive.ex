@@ -8,7 +8,9 @@ defmodule SamuelWillisWeb.HomeLive do
     %{name: "rock.jpg", alt: "Image of a person bouldering"},
     %{name: "train.jpg", alt: "Image of a train track crossing above a valley river"},
     %{name: "valley.jpg", alt: "Image of a valley with a large river in it"},
-    %{name: "waterfall.jpg", alt: "Image of a waterfall"}
+    %{name: "waterfall.jpg", alt: "Image of a waterfall"},
+    %{name: "fountain.jpg", alt: "Image of a fountain in CDMX"},
+    %{name: "house.jpg", alt: "Image of a house"}
   ]
 
   def render(assigns) do
