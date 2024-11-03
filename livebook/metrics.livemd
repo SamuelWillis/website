@@ -21,7 +21,7 @@ Load the metrics from website database
 """)
 ```
 
-<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJtZXRyaWNzIiwiY29kZSI6ImltcG9ydCBFY3RvLlF1ZXJ5LCBvbmx5OiBbZnJvbTogMl1cbmFsaWFzIFNhbXVlbFdpbGxpcy5NZXRyaWNzLk1ldHJpY1xuYWxpYXMgU2FtdWVsV2lsbGlzLlJlcG9cblxucXVlcnkgPSBmcm9tIG0gaW4gTWV0cmljLFxuICBvcmRlcl9ieTogW2Rlc2M6IG0uZGF0ZV0sXG4gIHNlbGVjdDogJXtcbiAgICBkYXRlOiBtLmRhdGUsXG4gICAgcGF0aDogbS5wYXRoLFxuICAgIHZpc2l0czogbS52aXNpdHMsXG4gIH1cblxuUmVwby5hbGwocXVlcnkpIiwiY29va2llIjoiIiwiY29va2llX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9DT09LSUUiLCJub2RlIjoiIiwibm9kZV9zZWNyZXQiOiJXRUJTSVRFX1JFTEVBU0VfTk9ERSIsIm5vZGVfc2VjcmV0X3ZhbHVlIjpudWxsLCJ1c2VfY29va2llX3NlY3JldCI6dHJ1ZSwidXNlX25vZGVfc2VjcmV0Ijp0cnVlfQ","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJtZXRyaWNzIiwiY29kZSI6ImltcG9ydCBFY3RvLlF1ZXJ5LCBvbmx5OiBbZnJvbTogMl1cbmFsaWFzIFNhbXVlbFdpbGxpcy5NZXRyaWNzLk1ldHJpY1xuYWxpYXMgU2FtdWVsV2lsbGlzLlJlcG9cblxucXVlcnkgPSBmcm9tIG0gaW4gTWV0cmljLFxuICBvcmRlcl9ieTogW2Rlc2M6IG0uZGF0ZV0sXG4gIHNlbGVjdDogJXtcbiAgICBkYXRlOiBtLmRhdGUsXG4gICAgcGF0aDogbS5wYXRoLFxuICAgIHZpc2l0czogbS52aXNpdHMsXG4gIH1cblxuUmVwby5hbGwocXVlcnkpIiwiY29va2llIjoiIiwiY29va2llX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9DT09LSUUiLCJub2RlIjoiIiwibm9kZV9zZWNyZXQiOiJXRUJTSVRFX1JFTEVBU0VfTk9ERSIsIm5vZGVfc2VjcmV0X3ZhbHVlIjoid2Vic2l0ZUBzYW11ZWxzLU1hY0Jvb2stUHJvIiwidXNlX2Nvb2tpZV9zZWNyZXQiOnRydWUsInVzZV9ub2RlX3NlY3JldCI6dHJ1ZX0","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 require Kino.RPC
@@ -105,13 +105,12 @@ Kino.nothing()
 metrics_from_time_period =
   Enum.filter(
     metrics,
-    &(Date.compare(&1.date, time_period_selected) == :gt)
+    &(Date.compare(&1.date, time_period_selected) in [:gt, :eq])
   )
 
 # Create a DataFrame containing all dates in the time period
 date_range_df =
   time_period_selected
-  |> Date.add(1)
   |> Date.range(Date.utc_today())
   |> Enum.map(&%{date: &1, path: "/", visits: 0})
   |> Explorer.DataFrame.new()
@@ -134,4 +133,4 @@ VegaLite.new(width: 700, height: 500)
 |> VegaLite.encode_field(:color, "path")
 ```
 
-<!-- livebook:{"offset":3590,"stamp":{"token":"XCP.2nfhEjTohIfXuHfkuKIJvHA5dD-VlTsX3LP7jSMUnGjZXBgYMtHmNHx6q8AJdfdUiaHXuJR25IkFV537PTdj9dZ_bX6gOTLBl9IRhh8qsaaaKEx5V6zaspLtX5dYn7-L0woaYKrAZiEU_Mv5uH3iBXODOc9KlYEmRj97vX4DrvCPuRv-nlHMoDNd23uLh7h0hbeDzKJABaRvswY4c666LJrjkcwTT7EUE8mWC8H8ApOBWVv6Tk1Owr4Qb5pbYg","version":2}} -->
+<!-- livebook:{"offset":3613,"stamp":{"token":"XCP.0DWNNFayP30yE4iXe6H0oVVCzMikfUJWKzd_NRDyV3c1ucVo99aEJ5xbinndpzTdZ3H4bb-QSeR_2hggp9giKKQnFpctiGa2XdzOYWxuiullC3PUsHwSu_2HA94mDwXzZq13D7pd01fm3miofNqn0hH12xIrLfda8YtAtL1Fl2U8sScBCkP6xxNAtF4205w68lzDk7q9uJOoHrsIpYlcV7i1w9Y0","version":2}} -->
