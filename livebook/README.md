@@ -27,6 +27,13 @@ iex --sname samuel_willis --cookie secret -S mix phx.server
 Then set the `WEBSITE_RELEASE_NODE=samuel_willis` and
 `WEBSITE_RELEASE_COOKIE=secret`
 
+> [!NOTE]
+> While running MacOS and the livebook app the above results in connection
+> errors with a message like:
+> _** System NOT running to use fully qualified hostnames **_
+> This can be avoided by using the `--name` option + an IP.
+> `iex --name website@127.0.0.1 --cookie cookie -S mix phx.server`
+
 ### Connecting to production site
 
 Connecting to production is roughly the same but you will need to find the node
