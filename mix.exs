@@ -47,7 +47,7 @@ defmodule SamuelWillis.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:makeup, "~> 1.2.1"},
-      {:makeup_elixir, "~> 0.16.1"},
+      {:makeup_elixir, "~> 1.0.0"},
       {:makeup_js, "~> 0.1.0"},
       {:nimble_publisher, "~> 1.0"},
       {:phoenix, "~> 1.7.6"},
