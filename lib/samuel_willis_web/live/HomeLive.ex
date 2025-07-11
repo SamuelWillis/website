@@ -100,7 +100,8 @@ defmodule SamuelWillisWeb.HomeLive do
   end
 
   def handle_event("close_gallery", _params, socket) do
-    {:noreply, assign(socket, gallery_open: false)}
+    current_image = Enum.at(@images, socket.assigns.current_image_index)
+    {:noreply, assign(socket, gallery_open: false, image: current_image)}
   end
 
   def handle_event("prev_image", _params, socket) do
@@ -126,11 +127,13 @@ defmodule SamuelWillisWeb.HomeLive do
   end
 
   def handle_event("select_image", %{"index" => index}, socket) do
-    {:noreply, assign(socket, current_image_index: String.to_integer(index))}
+    new_index = String.to_integer(index)
+    {:noreply, assign(socket, current_image_index: new_index)}
   end
 
   def handle_event("keydown", %{"key" => "Escape"}, socket) do
-    {:noreply, assign(socket, gallery_open: false)}
+    current_image = Enum.at(@images, socket.assigns.current_image_index)
+    {:noreply, assign(socket, gallery_open: false, image: current_image)}
   end
 
   def handle_event("keydown", %{"key" => "ArrowLeft"}, socket) do
@@ -166,7 +169,6 @@ defmodule SamuelWillisWeb.HomeLive do
       autofocus
     >
       <div class="max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center p-4">
-        <!-- Close button -->
         <button
           class="absolute top-2 md:top-4 right-2 md:right-4 text-white text-5xl md:text-6xl hover:text-gray-300 z-60 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
           phx-click="close_gallery"
@@ -174,10 +176,8 @@ defmodule SamuelWillisWeb.HomeLive do
         >
           ×
         </button>
-        
-    <!-- Main image container -->
+
         <div class="relative flex-1 flex items-center justify-center w-full max-h-[calc(100vh-120px)]">
-          <!-- Previous button -->
           <button
             class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 text-white text-5xl md:text-6xl hover:text-gray-300 z-10 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
             phx-click="prev_image"
@@ -185,16 +185,14 @@ defmodule SamuelWillisWeb.HomeLive do
           >
             ‹
           </button>
-          
-    <!-- Current image -->
+
           <img
             src={~p"/images/#{Enum.at(@images, @current_index).name}"}
             alt={Enum.at(@images, @current_index).alt}
             class="max-w-full max-h-full object-contain cursor-pointer"
             phx-click={JS.push("next_image")}
           />
-          
-    <!-- Next button -->
+
           <button
             class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 text-white text-5xl md:text-6xl hover:text-gray-300 z-10 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
             phx-click="next_image"
@@ -203,8 +201,7 @@ defmodule SamuelWillisWeb.HomeLive do
             ›
           </button>
         </div>
-        
-    <!-- Thumbnails -->
+
         <div class="flex space-x-2 mt-4 overflow-x-auto max-w-full px-4 pb-2">
           <div :for={{image, index} <- Enum.with_index(@images)} class="flex-shrink-0">
             <button
