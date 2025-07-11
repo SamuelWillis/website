@@ -1,4 +1,4 @@
-FROM ghcr.io/livebook-dev/livebook:0.13.3
+FROM ghcr.io/livebook-dev/livebook:0.16.4
 
 # Apps configuration
 ENV LIVEBOOK_APPS_PATH "/apps"
@@ -15,7 +15,7 @@ RUN /app/bin/warmup_apps
 
 # Runtime configuration to cluster multiple Livebook nodes on Fly.io
 RUN printf '\
-export ERL_AFLAGS="-proto_dist inet6_tcp"\n\
-export LIVEBOOK_NODE="${FLY_APP_NAME}-${FLY_IMAGE_REF##*-}@${FLY_PRIVATE_IP}"\n\
-export LIVEBOOK_CLUSTER="dns:${FLY_APP_NAME}.internal"\n\
-' > /app/user/env.sh
+    export ERL_AFLAGS="-proto_dist inet6_tcp"\n\
+    export LIVEBOOK_NODE="${FLY_APP_NAME}-${FLY_IMAGE_REF##*-}@${FLY_PRIVATE_IP}"\n\
+    export LIVEBOOK_CLUSTER="dns:${FLY_APP_NAME}.internal"\n\
+    ' > /app/user/env.sh
