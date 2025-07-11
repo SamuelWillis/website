@@ -162,7 +162,8 @@ defmodule SamuelWillisWeb.HomeLive do
       class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50"
       phx-click="close_gallery"
       phx-window-keydown="keydown"
-      phx-key="Escape"
+      tabindex="0"
+      autofocus
     >
       <div class="max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center p-4">
         <!-- Close button -->
