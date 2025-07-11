@@ -14,7 +14,13 @@ defmodule SamuelWillisWeb.HomeLive do
   ]
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :image, Enum.random(@images))}
+    {:ok,
+     assign(socket,
+       image: Enum.random(@images),
+       gallery_open: false,
+       current_image_index: 0,
+       images: @images
+     )}
   end
 
   def render(assigns) do
@@ -22,9 +28,12 @@ defmodule SamuelWillisWeb.HomeLive do
     <div class="flex-1 flex flex-col items-center sm:grid sm:grid-cols-2 sm:gap-6 space-y-6">
       <img
         src={~p"/images/#{@image.name}"}
-        class="hidden w-96"
+        class="hidden w-96 cursor-pointer focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500"
         alt={@image.alt}
         phx-connected={JS.show()}
+        phx-click="open_gallery"
+        phx-keydown="image_keydown"
+        tabindex="0"
       />
       <div class="w-96 h-full flex justify-center items-center" phx-connected={JS.hide()}>
         <svg
@@ -79,13 +88,163 @@ defmodule SamuelWillisWeb.HomeLive do
         </ul>
       </nav>
     </div>
+
+    <.gallery :if={@gallery_open} images={@images} current_index={@current_image_index} />
     """
   end
 
-  attr :image, :map, required: true
+  def handle_event("open_gallery", _params, socket) do
+    # Find the index of the currently displayed image
+    current_index =
+      Enum.find_index(@images, fn img -> img.name == socket.assigns.image.name end) || 0
 
-  def home_image(assigns) do
+    {:noreply, assign(socket, gallery_open: true, current_image_index: current_index)}
+  end
+
+  def handle_event("close_gallery", _params, socket) do
+    current_image = Enum.at(@images, socket.assigns.current_image_index)
+    {:noreply, assign(socket, gallery_open: false, image: current_image)}
+  end
+
+  def handle_event("prev_image", _params, socket) do
+    new_index =
+      if socket.assigns.current_image_index == 0 do
+        length(@images) - 1
+      else
+        socket.assigns.current_image_index - 1
+      end
+
+    {:noreply, assign(socket, current_image_index: new_index)}
+  end
+
+  def handle_event("next_image", _params, socket) do
+    new_index =
+      if socket.assigns.current_image_index == length(@images) - 1 do
+        0
+      else
+        socket.assigns.current_image_index + 1
+      end
+
+    {:noreply, assign(socket, current_image_index: new_index)}
+  end
+
+  def handle_event("select_image", %{"index" => index}, socket) do
+    new_index = String.to_integer(index)
+    {:noreply, assign(socket, current_image_index: new_index)}
+  end
+
+  def handle_event("keydown", %{"key" => "Escape"}, socket) do
+    current_image = Enum.at(@images, socket.assigns.current_image_index)
+    {:noreply, assign(socket, gallery_open: false, image: current_image)}
+  end
+
+  def handle_event("keydown", %{"key" => "ArrowLeft"}, socket) do
+    if socket.assigns.gallery_open do
+      handle_event("prev_image", %{}, socket)
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("keydown", %{"key" => "ArrowRight"}, socket) do
+    if socket.assigns.gallery_open do
+      handle_event("next_image", %{}, socket)
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("image_keydown", %{"key" => "Enter"}, socket) do
+    handle_event("open_gallery", %{}, socket)
+  end
+
+  def handle_event("image_keydown", %{"key" => " "}, socket) do
+    handle_event("open_gallery", %{}, socket)
+  end
+
+  def handle_event("image_keydown", _params, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("keydown", _params, socket) do
+    {:noreply, socket}
+  end
+
+  attr :images, :list, required: true
+  attr :current_index, :integer, required: true
+
+  def gallery(assigns) do
     ~H"""
+    <div
+      id="gallery-overlay"
+      class="fixed inset-0 bg-white flex items-center justify-center z-50"
+      phx-click="close_gallery"
+      phx-window-keydown="keydown"
+      tabindex="0"
+      phx-hook="AutoFocus"
+    >
+      <div class="max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center p-4">
+        <button
+          class="absolute top-2 md:top-4 right-2 md:right-4 text-black hover:text-indigo-800 hover:bg-indigo-50 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500 z-60 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 active:scale-95 active:bg-indigo-100 rounded-full cursor-pointer"
+          phx-click="close_gallery"
+          aria-label="Close gallery"
+          tabindex="0"
+        >
+          <.icon name="hero-x-mark-solid" class="h-6 w-6 md:h-8 md:w-8" />
+        </button>
+
+        <div class="relative flex-1 flex items-center justify-center w-full max-h-[calc(100vh-120px)]">
+          <button
+            class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 text-black hover:text-indigo-800 hover:bg-indigo-50 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500 z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 active:scale-95 active:bg-indigo-100 rounded-full cursor-pointer"
+            phx-click="prev_image"
+            aria-label="Previous image"
+            tabindex="0"
+          >
+            <.icon name="hero-chevron-left-solid" class="h-6 w-6 md:h-8 md:w-8" />
+          </button>
+
+          <img
+            src={~p"/images/#{Enum.at(@images, @current_index).name}"}
+            alt={Enum.at(@images, @current_index).alt}
+            class="max-w-full max-h-full object-contain cursor-pointer"
+            phx-click={JS.push("next_image")}
+          />
+
+          <button
+            class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 text-black hover:text-indigo-800 hover:bg-indigo-50 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500 z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 active:scale-95 active:bg-indigo-100 rounded-full cursor-pointer"
+            phx-click="next_image"
+            aria-label="Next image"
+            tabindex="0"
+          >
+            <.icon name="hero-chevron-right-solid" class="h-6 w-6 md:h-8 md:w-8" />
+          </button>
+        </div>
+
+        <div class="flex space-x-2 mt-4 overflow-x-auto max-w-full px-4 pb-2">
+          <div :for={{image, index} <- Enum.with_index(@images)} class="flex-shrink-0">
+            <button
+              class={[
+                "w-12 h-12 md:w-16 md:h-16 border-2 hover:border-white transition-all duration-200 transform hover:scale-110 active:scale-95 min-w-[44px] min-h-[44px] rounded-sm overflow-hidden focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500",
+                if(index == @current_index,
+                  do: "border-indigo-500 shadow-lg",
+                  else: "border-gray-300"
+                )
+              ]}
+              phx-click="select_image"
+              phx-value-index={index}
+              aria-label={"View image #{index + 1}: #{image.alt}"}
+              tabindex="0"
+            >
+              <img
+                src={~p"/images/#{image.name}"}
+                alt={image.alt}
+                class="w-full h-full object-cover rounded-sm"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     """
   end
 end
