@@ -43,7 +43,7 @@ defmodule SamuelWillisWeb do
         layouts: [html: SamuelWillisWeb.Layouts]
 
       import Plug.Conn
-      import SamuelWillisWeb.Gettext
+      use Gettext, backend: SamuelWillisWeb.Gettext
 
       unquote(verified_routes())
     end

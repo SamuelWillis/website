@@ -17,7 +17,7 @@ defmodule SamuelWillisWeb.CoreComponents do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
-  import SamuelWillisWeb.Gettext
+  use Gettext, backend: SamuelWillisWeb.Gettext
 
   @doc """
   Renders a modal.
