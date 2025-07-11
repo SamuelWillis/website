@@ -170,20 +170,20 @@ defmodule SamuelWillisWeb.HomeLive do
     >
       <div class="max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center p-4">
         <button
-          class="absolute top-2 md:top-4 right-2 md:right-4 text-white text-5xl md:text-6xl hover:text-gray-300 z-60 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
+          class="absolute top-2 md:top-4 right-2 md:right-4 text-white hover:text-indigo-200 hover:bg-black hover:bg-opacity-40 focus:text-indigo-200 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500 z-60 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 active:scale-95 active:bg-black active:bg-opacity-60 rounded-full cursor-pointer"
           phx-click="close_gallery"
           aria-label="Close gallery"
         >
-          ×
+          <.icon name="hero-x-mark-solid" class="h-6 w-6 md:h-8 md:w-8" />
         </button>
 
         <div class="relative flex-1 flex items-center justify-center w-full max-h-[calc(100vh-120px)]">
           <button
-            class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 text-white text-5xl md:text-6xl hover:text-gray-300 z-10 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
+            class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-indigo-200 hover:bg-black hover:bg-opacity-40 focus:text-indigo-200 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500 z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 active:scale-95 active:bg-black active:bg-opacity-60 rounded-full cursor-pointer"
             phx-click="prev_image"
             aria-label="Previous image"
           >
-            ‹
+            <.icon name="hero-chevron-left-solid" class="h-6 w-6 md:h-8 md:w-8" />
           </button>
 
           <img
@@ -194,11 +194,11 @@ defmodule SamuelWillisWeb.HomeLive do
           />
 
           <button
-            class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 text-white text-5xl md:text-6xl hover:text-gray-300 z-10 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
+            class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-indigo-200 hover:bg-black hover:bg-opacity-40 focus:text-indigo-200 focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500 z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center transition-all duration-200 active:scale-95 active:bg-black active:bg-opacity-60 rounded-full cursor-pointer"
             phx-click="next_image"
             aria-label="Next image"
           >
-            ›
+            <.icon name="hero-chevron-right-solid" class="h-6 w-6 md:h-8 md:w-8" />
           </button>
         </div>
 
@@ -206,7 +206,7 @@ defmodule SamuelWillisWeb.HomeLive do
           <div :for={{image, index} <- Enum.with_index(@images)} class="flex-shrink-0">
             <button
               class={[
-                "w-12 h-12 md:w-16 md:h-16 border-2 hover:border-white transition-all duration-200 transform hover:scale-110 active:scale-95 min-w-[44px] min-h-[44px] rounded-sm",
+                "w-12 h-12 md:w-16 md:h-16 border-2 hover:border-white transition-all duration-200 transform hover:scale-110 active:scale-95 min-w-[44px] min-h-[44px] rounded-sm overflow-hidden",
                 if(index == @current_index, do: "border-white shadow-lg", else: "border-gray-600")
               ]}
               phx-click="select_image"
