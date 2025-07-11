@@ -2,12 +2,12 @@
   <h1>Metrics!</h1>
 
   <div :for={{date, metrics} <- @metrics} class="flex gap-4">
-    <h2 class="font-bold"><%= date %></h2>
+    <h2 class="font-bold">{date}</h2>
 
     <dl class="">
       <div :for={metric <- metrics} class="flex gap-2">
-        <dt class=""><%= metric.path %>:</dt>
-        <dd><%= metric.visits %></dd>
+        <dt class="">{metric.path}:</dt>
+        <dd>{metric.visits}</dd>
       </div>
     </dl>
   </div>

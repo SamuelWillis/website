@@ -14,7 +14,7 @@ defmodule SamuelWillisWeb.ArticlesHTML do
         navigate={~p"/articles/#{@previous_article.id}"}
         class="text-center col-span-2 sm:col-start-1 sm:col-span-1 sm:justify-self-end"
       >
-        ← <%= @previous_article.title %>
+        ← {@previous_article.title}
       </.link>
 
       <.link
@@ -22,7 +22,7 @@ defmodule SamuelWillisWeb.ArticlesHTML do
         navigate={~p"/articles/#{@next_article.id}"}
         class="text-center col-span-2 sm:col-start-2 sm:justify-self-start sm:col-span-1"
       >
-        <%= @next_article.title %> →
+        {@next_article.title} →
       </.link>
     </div>
     """

@@ -12,7 +12,7 @@ defmodule SamuelWillisWeb.Layouts do
       <p>
         Page Views:
         <span class="bg-gray-100 text-gray-800 font-mono px-2 py-1 rounded">
-          <%= @visits %>
+          {@visits}
         </span>
       </p>
     </aside>
