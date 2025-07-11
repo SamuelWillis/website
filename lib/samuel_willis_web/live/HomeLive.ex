@@ -168,7 +168,7 @@ defmodule SamuelWillisWeb.HomeLive do
       <div class="max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center p-4">
         <!-- Close button -->
         <button
-          class="absolute top-4 right-4 text-white text-2xl hover:text-gray-300 z-60"
+          class="absolute top-2 md:top-4 right-2 md:right-4 text-white text-5xl md:text-6xl hover:text-gray-300 z-60 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
           phx-click="close_gallery"
           aria-label="Close gallery"
         >
@@ -179,7 +179,7 @@ defmodule SamuelWillisWeb.HomeLive do
         <div class="relative flex-1 flex items-center justify-center w-full max-h-[calc(100vh-120px)]">
           <!-- Previous button -->
           <button
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10"
+            class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 text-white text-5xl md:text-6xl hover:text-gray-300 z-10 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
             phx-click="prev_image"
             aria-label="Previous image"
           >
@@ -190,13 +190,13 @@ defmodule SamuelWillisWeb.HomeLive do
           <img
             src={~p"/images/#{Enum.at(@images, @current_index).name}"}
             alt={Enum.at(@images, @current_index).alt}
-            class="max-w-full max-h-full object-contain"
+            class="max-w-full max-h-full object-contain cursor-pointer"
             phx-click={JS.push("next_image")}
           />
           
     <!-- Next button -->
           <button
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-gray-300 z-10"
+            class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 text-white text-5xl md:text-6xl hover:text-gray-300 z-10 p-2 md:p-3 min-w-[50px] min-h-[50px] md:min-w-[60px] md:min-h-[60px] flex items-center justify-center transition-all duration-200 active:scale-95"
             phx-click="next_image"
             aria-label="Next image"
           >
@@ -205,18 +205,23 @@ defmodule SamuelWillisWeb.HomeLive do
         </div>
         
     <!-- Thumbnails -->
-        <div class="flex space-x-2 mt-4 overflow-x-auto max-w-full">
+        <div class="flex space-x-2 mt-4 overflow-x-auto max-w-full px-4 pb-2">
           <div :for={{image, index} <- Enum.with_index(@images)} class="flex-shrink-0">
-            <img
-              src={~p"/images/#{image.name}"}
-              alt={image.alt}
+            <button
               class={[
-                "w-16 h-16 object-cover cursor-pointer border-2 hover:border-white transition-colors",
-                if(index == @current_index, do: "border-white", else: "border-gray-600")
+                "w-12 h-12 md:w-16 md:h-16 border-2 hover:border-white transition-all duration-200 transform hover:scale-110 active:scale-95 min-w-[44px] min-h-[44px] rounded-sm",
+                if(index == @current_index, do: "border-white shadow-lg", else: "border-gray-600")
               ]}
               phx-click="select_image"
               phx-value-index={index}
-            />
+              aria-label={"View image #{index + 1}: #{image.alt}"}
+            >
+              <img
+                src={~p"/images/#{image.name}"}
+                alt={image.alt}
+                class="w-full h-full object-cover rounded-sm"
+              />
+            </button>
           </div>
         </div>
       </div>
