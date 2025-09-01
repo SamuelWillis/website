@@ -50,7 +50,7 @@ defmodule SamuelWillis.MixProject do
       {:makeup_elixir, "~> 1.0.1"},
       {:makeup_js, "~> 0.1.0"},
       {:nimble_publisher, "~> 1.0"},
-      {:phoenix, "~> 1.7.6"},
+      {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
