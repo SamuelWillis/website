@@ -31,44 +31,38 @@ defmodule SamuelWillisWeb.Layouts do
     default: nil,
     doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
 
+  attr :page_visits, :integer, doc: "the number of page visits"
+
   slot :inner_block, required: true
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
-      <div class="flex-1">
-        <a href="/" class="flex-1 flex w-fit items-center gap-2">
-          <img src={~p"/images/logo.svg"} width="36" />
-          <span class="text-sm font-semibold">v{Application.spec(:phoenix, :vsn)}</span>
-        </a>
-      </div>
-      <div class="flex-none">
-        <ul class="flex flex-column px-1 space-x-4 items-center">
-          <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
-          </li>
-          <li>
-            <.theme_toggle />
-          </li>
-          <li>
-            <a href="https://hexdocs.pm/phoenix/overview.html" class="btn btn-primary">
-              Get Started <span aria-hidden="true">&rarr;</span>
-            </a>
-          </li>
-        </ul>
-      </div>
+    <header class="flex justify-between p-4">
+      <h1 class="text-2xl font-bold">
+        <.link
+          navigate={~p"/"}
+          class="px-4 py-2 font-semibold text-xl rounded-sm hover:text-indigo-800 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-0 focus:outline-indigo-500"
+        >
+          Samuel Willis
+        </.link>
+      </h1>
     </header>
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
-        {render_slot(@inner_block)}
-      </div>
+    <main class="flex flex-1 md:w-full max-w-prose mt-8 mx-6 sm:mx-8 md:mx-auto">
+      {render_slot(@inner_block)}
     </main>
 
     <.flash_group flash={@flash} />
+
+    <footer class="grid grid-cols-3 items-center p-4">
+      <div class="col-start-2 justify-self-center">
+        <.social_links />
+      </div>
+
+      <div class="hidden sm:block col-start-3 justify-self-end">
+        <.page_visits visits={@page_visits} />
+      </div>
+    </footer>
     """
   end
 
