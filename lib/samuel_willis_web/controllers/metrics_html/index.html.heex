@@ -1,21 +1,20 @@
 <Layouts.app flash={@flash} page_visits={@page_visits}>
-<section class="w-full space-y-4">
-  <h1>Metrics!</h1>
+  <section class="w-full space-y-4">
+    <h1>Metrics!</h1>
 
-  <div :for={{date, metrics} <- @metrics} class="flex gap-4">
-    <h2 class="font-bold">{date}</h2>
+    <div :for={{date, metrics} <- @metrics} class="flex gap-4">
+      <h2 class="font-bold">{date}</h2>
 
-    <dl class="">
-      <div :for={metric <- metrics} class="flex gap-2">
-        <dt class="">{metric.path}:</dt>
-        <dd>{metric.visits}</dd>
-      </div>
-    </dl>
-  </div>
+      <dl class="">
+        <div :for={metric <- metrics} class="flex gap-2">
+          <dt class="">{metric.path}:</dt>
+          <dd>{metric.visits}</dd>
+        </div>
+      </dl>
+    </div>
 
-  <p :if={Enum.empty?(@metrics)}>
-    No metrics to display
-  </p>
-</section>
-
+    <p :if={Enum.empty?(@metrics)}>
+      No metrics to display
+    </p>
+  </section>
 </Layouts.app>

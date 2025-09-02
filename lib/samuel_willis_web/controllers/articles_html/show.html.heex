@@ -1,19 +1,18 @@
 <Layouts.app flash={@flash} page_visits={@page_visits}>
+  <article class="prose prose-zinc max-w-full">
+    <header>
+      <h1>{@article.title}</h1>
+      <p class="not-prose text-sm leading-normal text-zinc-600">
+        {@article.description}
+      </p>
+    </header>
 
-<article class="prose prose-zinc max-w-full">
-  <header>
-    <h1>{@article.title}</h1>
-    <p class="not-prose text-sm leading-normal text-zinc-600">
-      {@article.description}
+    {raw(@article.body)}
+
+    <p class="text-center">
+      {Date.to_string(@article.date)}
     </p>
-  </header>
 
-  {raw(@article.body)}
-
-  <p class="text-center">
-    {Date.to_string(@article.date)}
-  </p>
-
-  <.navigation previous_article={@previous_article} next_article={@next_article} />
-</article>
+    <.navigation previous_article={@previous_article} next_article={@next_article} />
+  </article>
 </Layouts.app>
