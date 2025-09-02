@@ -9,11 +9,12 @@ import Config
 
 config :samuel_willis,
   ecto_repos: [SamuelWillis.Repo],
-  generators: [binary_id: true]
+  generators: [binary_id: true, timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :samuel_willis, SamuelWillisWeb.Endpoint,
   url: [host: "localhost"],
+  adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: SamuelWillisWeb.ErrorHTML, json: SamuelWillisWeb.ErrorJSON],
     layout: false
@@ -30,30 +31,28 @@ config :samuel_willis, SamuelWillisWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :samuel_willis, SamuelWillis.Mailer, adapter: Swoosh.Adapters.Local
 
-# Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.17.11",
-  default: [
+  version: "0.25.4",
+  samuel_willis: [
     args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
     cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ]
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.2.7",
-  default: [
+  version: "4.1.7",
+  samuel_willis: [
     args: ~w(
-      --config=tailwind.config.js
-      --input=css/app.css
-      --output=../priv/static/assets/app.css
+      --input=assets/css/app.css
+      --output=priv/static/assets/css/app.css
     ),
-    cd: Path.expand("../assets", __DIR__)
+    cd: Path.expand("..", __DIR__)
   ]
 
 # Configures Elixir's Logger
-config :logger, :console,
+config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

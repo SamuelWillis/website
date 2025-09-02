@@ -8,18 +8,15 @@ defmodule SamuelWillis.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Telemetry supervisor
       SamuelWillisWeb.Telemetry,
-      # Start the Ecto repository
       SamuelWillis.Repo,
-      # Start the PubSub system
+      {DNSCluster, query: Application.get_env(:samuel_willis, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: SamuelWillis.PubSub},
-      # Start Finch
-      {Finch, name: SamuelWillis.Finch},
-      # Start the Endpoint (http/https)
-      SamuelWillisWeb.Endpoint,
       # Start a worker by calling: SamuelWillis.Worker.start_link(arg)
-      SamuelWillis.Metrics.Supervisor
+      # {SamuelWillis.Worker, arg},
+      SamuelWillis.Metrics.Supervisor,
+      # Start to serve requests, typically the last entry
+      SamuelWillisWeb.Endpoint
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

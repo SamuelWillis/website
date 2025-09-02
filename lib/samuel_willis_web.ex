@@ -38,12 +38,11 @@ defmodule SamuelWillisWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller,
-        formats: [:html, :json],
-        layouts: [html: SamuelWillisWeb.Layouts]
+      use Phoenix.Controller, formats: [:html, :json]
+
+      use Gettext, backend: SamuelWillisWeb.Gettext
 
       import Plug.Conn
-      use Gettext, backend: SamuelWillisWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -51,9 +50,7 @@ defmodule SamuelWillisWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {SamuelWillisWeb.Layouts, :app},
-        container: {:div, class: "h-screen flex flex-col"}
+      use Phoenix.LiveView
 
       unquote(html_helpers())
     end
@@ -82,14 +79,17 @@ defmodule SamuelWillisWeb do
 
   defp html_helpers do
     quote do
+      # Translation
+      use Gettext, backend: SamuelWillisWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
-      # Core UI components and translation
+      # Core UI components
       import SamuelWillisWeb.CoreComponents
-      import SamuelWillisWeb.Gettext
 
-      # Shortcut for generating JS commands
+      # Common modules used in templates
       alias Phoenix.LiveView.JS
+      alias SamuelWillisWeb.Layouts
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
@@ -106,7 +106,7 @@ defmodule SamuelWillisWeb do
   end
 
   @doc """
-  When used, dispatch to the appropriate controller/view/etc.
+  When used, dispatch to the appropriate controller/live_view/etc.
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])

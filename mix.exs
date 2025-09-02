@@ -10,6 +10,8 @@ defmodule SamuelWillis.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      listeners: [Phoenix.CodeReloader],
       dialyzer: [
         plt_add_deps: :apps_tree,
         plt_add_apps: [:mix, :ex_unit],
@@ -37,20 +39,29 @@ defmodule SamuelWillis.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bandit, "~> 1.5"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false},
+      {:dns_cluster, "~> 0.2.0"},
       {:ecto_sql, "~> 3.10"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:ex_check, "~> 0.15.0", only: [:dev, :test], runtime: false},
       {:finch, "~> 0.13"},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
+      {:heroicons,
+       github: "tailwindlabs/heroicons",
+       tag: "v2.2.0",
+       sparse: "optimized",
+       app: false,
+       compile: false,
+       depth: 1},
       {:jason, "~> 1.2"},
       {:makeup, "~> 1.2.1"},
       {:makeup_elixir, "~> 1.0.1"},
       {:makeup_js, "~> 0.1.0"},
       {:nimble_publisher, "~> 1.0"},
-      {:phoenix, "~> 1.7.6"},
+      {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
@@ -60,9 +71,9 @@ defmodule SamuelWillis.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
-      {:tidewave, "~> 0.1", only: :dev},
       {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.0"},
+      {:tidewave, "~> 0.1", only: :dev}
     ]
   end
 
@@ -79,8 +90,13 @@ defmodule SamuelWillis.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+      "assets.build": ["compile", "tailwind samuel_willis", "esbuild samuel_willis"],
+      "assets.deploy": [
+        "tailwind samuel_willis --minify",
+        "esbuild samuel_willis --minify",
+        "phx.digest"
+      ],
+      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"]
     ]
   end
 end
