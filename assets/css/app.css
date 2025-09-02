@@ -2,9 +2,13 @@
    https://tailwindcss.com/docs/configuration */
 
 @import "tailwindcss" source(none);
+@plugin "@tailwindcss/typography";
+
 @source "../css";
 @source "../js";
 @source "../../lib/samuel_willis_web";
+
+@config "../tailwind.config.js";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
