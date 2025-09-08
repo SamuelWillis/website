@@ -15,18 +15,14 @@ defmodule SamuelWillisWeb.NowLive do
         </p>
         <ul>
           <li>
-            Training to ride the
-            <.link href="https://www.bcepic1000.com/" rel="noreferrer" target="_blank">BC Epic</.link>
+            Moving back to Victoria, BC
           </li>
           <li>
-            Leaning into enjoying yoga 🧘‍♂️
-          </li>
-          <li>
-            Modifying a 1972 Harley-Davidson XLCH
+            Bulding a 1952 Panhead
           </li>
         </ul>
         <p class="not-prose text-sm leading-normal text-zinc-600">
-          Updated Jun 7, 2024
+          Updated September 7, 2025
         </p>
       </article>
     </Layouts.app>

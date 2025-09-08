@@ -9,19 +9,27 @@ defmodule SamuelWillisWeb.AboutLive do
           👋 Hello
         </h1>
         <p>
-          I am a Software Engineer currently working with Laravel, Vue.JS, and
-          a sprinkle of Python.
+          I am a Software Engineer currently working at
+          <.link href="https://www.hiive.com/">Hiive</.link>
         </p>
         <p>
-          I am also an avid cyclist who can generally be found outside in my off time.
+          I am an avid cyclist who can generally be found outside in my off time.
         </p>
         <p>
           Currently residing on the traditional territories of the Skwxwú7mesh-ulh
           Temíx̱w.
         </p>
         <p>
-          If you'd like to get in touch you can send me an email or reach me on
-          LinkedIn by clicking the icons below.
+          If you'd like to get in touch you can send me an
+          <.link href="mailto:hello@samuelwillis.dev=Hey!">email</.link>
+          or reach me on
+          <.link
+            href="https://www.linkedin.com/in/willissamuel/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </.link>
         </p>
       </article>
     </Layouts.app>
