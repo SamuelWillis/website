@@ -13,20 +13,31 @@ defmodule SamuelWillisWeb.HomeLive do
     %{name: "house.jpg", alt: "Image of a house"}
   ]
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     {:ok, assign(socket, :image, Enum.random(@images))}
   end
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} page_visits={@page_visits}>
       <div class="flex-1 flex flex-col items-center sm:grid sm:grid-cols-2 sm:gap-6 space-y-6">
-        <img
-          src={~p"/images/#{@image.name}"}
-          class="hidden w-96 hover:c"
-          alt={@image.alt}
+        <button
+          class="hidden active:blue-100 relative group cursor-pointer"
+          phx-click="refresh_image"
           phx-connected={JS.show()}
-        />
+        >
+          <img
+            src={~p"/images/#{@image.name}"}
+            class="w-96 object-cover"
+            alt={@image.alt}
+          />
+          <div class="absolute inset-0 flex justify-center items-center bg-base-100/60 p-6 opacity-0 transition-opacity group-hover:opacity-100">
+            <.icon name="hero-arrow-path" class="size-15" />
+          </div>
+          <span class="sr-only">Refresh Image</span>
+        </button>
         <div class="w-96 h-full flex justify-center items-center" phx-connected={JS.hide()}>
           <span class="loading loading-ring loading-md"></span>
         </div>
@@ -55,10 +66,8 @@ defmodule SamuelWillisWeb.HomeLive do
     """
   end
 
-  attr :image, :map, required: true
-
-  def home_image(assigns) do
-    ~H"""
-    """
+  @impl Phoenix.LiveView
+  def handle_event("refresh_image", _params, socket) do
+    {:noreply, assign(socket, :image, Enum.random(@images))}
   end
 end

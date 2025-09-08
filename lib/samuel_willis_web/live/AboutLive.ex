@@ -1,6 +1,7 @@
 defmodule SamuelWillisWeb.AboutLive do
   use SamuelWillisWeb, :live_view
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash} page_visits={@page_visits}>
