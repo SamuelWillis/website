@@ -13,8 +13,9 @@
 
   ## list of tools (see `mix check` docs for a list of default curated tools)
   tools: [
-    {:ex_doc, false},
     {:doctor, false},
+    {:ex_doc, false},
+    {:gettext, false},
     {:sobelow, false}
   ]
 ]
