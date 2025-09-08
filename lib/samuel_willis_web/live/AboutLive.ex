@@ -10,7 +10,7 @@ defmodule SamuelWillisWeb.AboutLive do
         </h1>
         <p>
           I am a Software Engineer currently working at
-          <.link href="https://www.hiive.com/">Hiive</.link>
+          <.link class="link link-primary" href="https://www.hiive.com/">Hiive</.link>
         </p>
         <p>
           I am an avid cyclist who can generally be found outside in my off time.
@@ -21,9 +21,10 @@ defmodule SamuelWillisWeb.AboutLive do
         </p>
         <p>
           If you'd like to get in touch you can send me an
-          <.link href="mailto:hello@samuelwillis.dev=Hey!">email</.link>
+          <.link class="link link-primary" href="mailto:hello@samuelwillis.dev=Hey!">email</.link>
           or reach me on
           <.link
+            class="link link-primary"
             href="https://www.linkedin.com/in/willissamuel/"
             target="_blank"
             rel="noopener noreferrer"

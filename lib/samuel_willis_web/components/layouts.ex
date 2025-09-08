@@ -41,11 +41,12 @@ defmodule SamuelWillisWeb.Layouts do
       <h1 class="text-2xl font-bold">
         <.link
           navigate={~p"/"}
-          class="px-4 py-2 font-semibold text-xl rounded-sm hover:text-indigo-800 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-0 focus:outline-indigo-500"
+          class="link link-primary link-hover"
         >
           Samuel Willis
         </.link>
       </h1>
+      <.theme_toggle />
     </header>
 
     <main class="flex flex-1 md:w-full max-w-prose mt-8 mx-6 sm:mx-8 md:mx-auto">
@@ -117,7 +118,7 @@ defmodule SamuelWillisWeb.Layouts do
   def theme_toggle(assigns) do
     ~H"""
     <div class="card relative flex flex-row items-center border-2 border-base-300 bg-base-300 rounded-full">
-      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=light]_&]:left-1/3 [[data-theme=dark]_&]:left-2/3 transition-[left]" />
+      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=lofi]_&]:left-1/3 [[data-theme=coffee]_&]:left-2/3 transition-[left]" />
 
       <button
         class="flex p-2 cursor-pointer w-1/3"
@@ -130,7 +131,7 @@ defmodule SamuelWillisWeb.Layouts do
       <button
         class="flex p-2 cursor-pointer w-1/3"
         phx-click={JS.dispatch("phx:set-theme")}
-        data-phx-theme="light"
+        data-phx-theme="lofi"
       >
         <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
       </button>
@@ -138,7 +139,7 @@ defmodule SamuelWillisWeb.Layouts do
       <button
         class="flex p-2 cursor-pointer w-1/3"
         phx-click={JS.dispatch("phx:set-theme")}
-        data-phx-theme="dark"
+        data-phx-theme="coffee"
       >
         <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
       </button>
@@ -153,9 +154,7 @@ defmodule SamuelWillisWeb.Layouts do
     <aside class="flex items-center space-x-2">
       <p>
         Page Views:
-        <span class="bg-gray-100 text-gray-800 font-mono px-2 py-1 rounded">
-          {@visits}
-        </span>
+        <div class="badge badge-primary">{@visits}</div>
       </p>
     </aside>
     """
@@ -170,7 +169,7 @@ defmodule SamuelWillisWeb.Layouts do
             href="https://github.com/SamuelWillis"
             target="_blank"
             rel="noopener noreferrer"
-            class="block p-2 font-semibold text-xl rounded-md hover:text-indigo-800 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-0 focus:outline-indigo-500"
+            class="link link-primary link-hover"
           >
             <svg class="fill-current w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96">
               <path
@@ -186,7 +185,7 @@ defmodule SamuelWillisWeb.Layouts do
             href="https://www.linkedin.com/in/willissamuel/"
             target="_blank"
             rel="noopener noreferrer"
-            class="block p-2 font-semibold text-xl rounded-md hover:text-indigo-800 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-0 focus:outline-indigo-500"
+            class="link link-primary link-hover"
           >
             <svg class="fill-current w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
@@ -196,7 +195,7 @@ defmodule SamuelWillisWeb.Layouts do
         <li>
           <.link
             href="mailto:hello@samuelwillis.dev=Hey!"
-            class="block p-2 font-semibold text-xl rounded-md hover:text-indigo-800 focus:text-indigo-800 focus:outline-dashed focus:outline-2 focus:outline-offset-0 focus:outline-indigo-500"
+            class="link link-primary link-hover"
           >
             <.icon name="hero-envelope" class="w-10 h-10" />
           </.link>

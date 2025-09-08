@@ -12,7 +12,7 @@ defmodule SamuelWillisWeb.ArticlesHTML do
       <.link
         :if={@previous_article}
         navigate={~p"/articles/#{@previous_article.id}"}
-        class="text-center col-span-2 sm:col-start-1 sm:col-span-1 sm:justify-self-end"
+        class="link link-primary link-hover"
       >
         ← {@previous_article.title}
       </.link>
@@ -20,7 +20,7 @@ defmodule SamuelWillisWeb.ArticlesHTML do
       <.link
         :if={@next_article}
         navigate={~p"/articles/#{@next_article.id}"}
-        class="text-center col-span-2 sm:col-start-2 sm:justify-self-start sm:col-span-1"
+        class="link link-primary link-hover"
       >
         {@next_article.title} →
       </.link>
