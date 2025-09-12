@@ -15,7 +15,9 @@ defmodule SamuelWillisWeb.HomeLive do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :image, Enum.random(@images))}
+    socket = socket |> assign(:image, Enum.random(@images))
+
+    {:ok, socket}
   end
 
   @impl Phoenix.LiveView
@@ -24,17 +26,20 @@ defmodule SamuelWillisWeb.HomeLive do
     <Layouts.app flash={@flash} page_visits={@page_visits}>
       <div class="flex-1 flex flex-col items-center sm:grid sm:grid-cols-2 sm:gap-6 space-y-6">
         <button
-          class="hidden active:blue-100 relative group cursor-pointer"
-          phx-click="refresh_image"
+          class="group hidden focus:outline-none relative cursor-pointer"
+          phx-click={
+            JS.transition({"animate-single-spin", "", ""}, to: ".refresh-icon", time: "1000")
+            |> JS.push("refresh_image")
+          }
           phx-connected={JS.show()}
         >
           <img
             src={~p"/images/#{@image.name}"}
-            class="w-96 object-cover"
+            class="w-96 object-cover focus:outline-none"
             alt={@image.alt}
           />
-          <div class="absolute inset-0 flex justify-center items-center bg-base-100/60 p-6 opacity-0 transition-opacity group-hover:opacity-100">
-            <.icon name="hero-arrow-path" class="size-15" />
+          <div class="absolute inset-0 flex justify-center items-center bg-base-100/60 p-6 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+            <.icon name="hero-arrow-path" class="size-15 refresh-icon" />
           </div>
           <span class="sr-only">Refresh Image</span>
         </button>
@@ -68,6 +73,10 @@ defmodule SamuelWillisWeb.HomeLive do
 
   @impl Phoenix.LiveView
   def handle_event("refresh_image", _params, socket) do
-    {:noreply, assign(socket, :image, Enum.random(@images))}
+    %{image: image} = socket.assigns
+
+    new_image = @images |> Enum.reject(&(&1.name == image.name)) |> Enum.random()
+
+    {:noreply, assign(socket, :image, new_image)}
   end
 end

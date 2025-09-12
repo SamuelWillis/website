@@ -121,7 +121,7 @@ defmodule SamuelWillisWeb.Layouts do
       <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=lofi]_&]:left-1/3 [[data-theme=coffee]_&]:left-2/3 transition-[left]" />
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="btn btn-sm btn-circle"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="system"
       >
@@ -129,7 +129,7 @@ defmodule SamuelWillisWeb.Layouts do
       </button>
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="btn btn-sm btn-circle"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="lofi"
       >
@@ -137,7 +137,7 @@ defmodule SamuelWillisWeb.Layouts do
       </button>
 
       <button
-        class="flex p-2 cursor-pointer w-1/3"
+        class="btn btn-sm btn-circle"
         phx-click={JS.dispatch("phx:set-theme")}
         data-phx-theme="coffee"
       >
@@ -195,7 +195,7 @@ defmodule SamuelWillisWeb.Layouts do
         <li>
           <.link
             href="mailto:hello@samuelwillis.dev=Hey!"
-            class="link link-primary link-hover"
+            class="link link-primary link-hover pt-2 pb-3"
           >
             <.icon name="hero-envelope" class="w-10 h-10" />
           </.link>

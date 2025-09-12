@@ -2,9 +2,6 @@
 module.exports = {
   theme: {
     extend: {
-      colors: {
-        brand: "#FD4F00",
-      },
       typography: (theme) => ({
         DEFAULT: {
           css: {

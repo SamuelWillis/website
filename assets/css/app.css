@@ -39,4 +39,16 @@
 
 /* This file is for your main application CSS */
 
+@theme {
+    --animate-single-spin: single-spin 1s linear 1;
+    @keyframes single-spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
+
 @import "./make_up.css";
