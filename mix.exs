@@ -59,7 +59,7 @@ defmodule SamuelWillis.MixProject do
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:ex_check, "~> 0.16.0", only: [:dev, :test], runtime: false},
       {:finch, "~> 0.13"},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 1.0"},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.2.0",
