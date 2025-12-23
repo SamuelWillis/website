@@ -12,7 +12,8 @@ defmodule SamuelWillisWeb.Endpoint do
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [:uri, session: @session_options]]
+    websocket: [connect_info: [session: @session_options]],
+    longpoll: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -21,8 +22,9 @@ defmodule SamuelWillisWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :samuel_willis,
-    gzip: false,
-    only: SamuelWillisWeb.static_paths()
+    gzip: not code_reloading?,
+    only: SamuelWillisWeb.static_paths(),
+    raise_on_missing_only: code_reloading?
 
   if Code.ensure_loaded?(Tidewave) do
     plug Tidewave
