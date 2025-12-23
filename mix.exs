@@ -11,7 +11,7 @@ defmodule SamuelWillis.MixProject do
       aliases: aliases(),
       deps: deps(),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
-      listeners: [Phoenix.CodeReloader],
+      listeners: listeners(),
       dialyzer: [
         plt_add_deps: :apps_tree,
         plt_add_apps: [:mix, :ex_unit],
@@ -28,6 +28,18 @@ defmodule SamuelWillis.MixProject do
       mod: {SamuelWillis.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
+  end
+
+  defp listeners do
+    if dependabot?() do
+      []
+    else
+      [Phoenix.CodeReloader]
+    end
+  end
+
+  defp dependabot? do
+    Enum.any?(System.get_env(), fn {key, _value} -> String.starts_with?(key, "DEPENDABOT") end)
   end
 
   # Specifies which paths to compile per environment.
