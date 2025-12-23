@@ -84,7 +84,7 @@ defmodule SamuelWillis.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:req, "~> 0.5"},
       {:swoosh, "~> 1.3"},
-      {:tailwind, "~> 0.3.1", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4.1", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:tidewave, "~> 0.1", only: :dev}
