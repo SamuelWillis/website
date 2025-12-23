@@ -68,6 +68,7 @@ defmodule SamuelWillis.MixProject do
        compile: false,
        depth: 1},
       {:jason, "~> 1.2"},
+      {:igniter, "~> 0.7", only: [:dev]},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:makeup, "~> 1.2.1"},
       {:makeup_elixir, "~> 1.0.1"},
