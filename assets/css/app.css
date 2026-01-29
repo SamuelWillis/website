@@ -18,9 +18,49 @@
    curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js
    Make sure to look at the daisyUI changelog: https://daisyui.com/docs/changelog/ */
 @plugin "../vendor/daisyui" {
-    themes:
-        lofi --default,
-        coffee --prefersdark;
+    themes: false;
+}
+
+@plugin "../vendor/daisyui-theme" {
+    name: "lofidark";
+    default: false;
+    prefersdark: true;
+    color-scheme: "dark";
+    --color-base-100: oklch(12% 0 0);
+    --color-base-200: oklch(18% 0 0);
+    --color-base-300: oklch(24% 0 0);
+    --color-base-content: oklch(95% 0 0);
+    --color-primary: oklch(84.094% 0 0);
+    --color-primary-content: oklch(0% 0 0);
+    --color-secondary: oklch(78.545% 0.001 17.278);
+    --color-secondary-content: oklch(0% 0 0);
+    --color-accent: oklch(73.139% 0 0);
+    --color-accent-content: oklch(0% 0 0);
+    --color-neutral: oklch(100% 0 0);
+    --color-neutral-content: oklch(0% 0 0);
+    --color-info: oklch(79.54% 0.103 205.9);
+    --color-info-content: oklch(15.908% 0.02 205.9);
+    --color-success: oklch(90.13% 0.153 164.14);
+    --color-success-content: oklch(18.026% 0.03 164.14);
+    --color-warning: oklch(88.37% 0.135 79.94);
+    --color-warning-content: oklch(17.674% 0.027 79.94);
+    --color-error: oklch(78.66% 0.15 28.47);
+    --color-error-content: oklch(15.732% 0.03 28.47);
+    --radius-selector: 2rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+    name: "lofi";
+    default: true;
+    prefersdark: false;
+    color-scheme: "light";
 }
 
 /* Add variants based on LiveView classes */
@@ -29,7 +69,7 @@
 @custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
 
 /* Use the data attribute for dark mode  */
-@custom-variant dark (&:where([data-theme=coffee], [data-theme=coffee] *));
+@custom-variant dark (&:where([data-theme=lofidark], [data-theme=lofidark] *));
 
 /* Make LiveView wrapper divs transparent for layout */
 [data-phx-session],
