@@ -9,7 +9,8 @@ defmodule SamuelWillis.Blog do
     build: Article,
     from: Application.app_dir(:samuel_willis, "priv/articles/**/*.md"),
     as: :articles,
-    highlighters: [:makeup_elixir, :makeup_js]
+    html_converter: SamuelWillis.Blog.MDExConverter,
+    highlighters: []
 
   # The @articles variable is first defined by NimblePublisher.
   # Let's further modify it by filtering unpublished articles and sorting all
