@@ -6,6 +6,9 @@
 app = "samuelwillisdev-metrics"
 primary_region = "yyz"
 
+[experimental]
+private_network = true
+
 [build]
 
 [http_service]

@@ -7,6 +7,9 @@ app = "samuelwillisdev"
 primary_region = "yyz"
 kill_signal = "SIGTERM"
 
+[experimental]
+private_network = true
+
 [build]
 
 [deploy]
