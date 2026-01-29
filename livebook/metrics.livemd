@@ -21,7 +21,7 @@ Load the metrics from website database
 """)
 ```
 
-<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJtZXRyaWNzIiwiY29kZSI6ImltcG9ydCBFY3RvLlF1ZXJ5LCBvbmx5OiBbZnJvbTogMl1cbmFsaWFzIFNhbXVlbFdpbGxpcy5NZXRyaWNzLk1ldHJpY1xuYWxpYXMgU2FtdWVsV2lsbGlzLlJlcG9cblxucXVlcnkgPSBmcm9tIG0gaW4gTWV0cmljLFxuICBvcmRlcl9ieTogW2Rlc2M6IG0uZGF0ZV0sXG4gIHNlbGVjdDogJXtcbiAgICBkYXRlOiBtLmRhdGUsXG4gICAgcGF0aDogbS5wYXRoLFxuICAgIHZpc2l0czogbS52aXNpdHMsXG4gIH1cblxuUmVwby5hbGwocXVlcnkpIiwiY29va2llIjoiIiwiY29va2llX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9DT09LSUUiLCJub2RlIjoiIiwibm9kZV9zZWNyZXQiOiJXRUJTSVRFX1JFTEVBU0VfTk9ERSIsIm5vZGVfc2VjcmV0X3ZhbHVlIjoid2Vic2l0ZUBzYW11ZWxzLU1hY0Jvb2stUHJvIiwidXNlX2Nvb2tpZV9zZWNyZXQiOnRydWUsInVzZV9ub2RlX3NlY3JldCI6dHJ1ZX0","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOiJtZXRyaWNzIiwiY29kZSI6ImltcG9ydCBFY3RvLlF1ZXJ5LCBvbmx5OiBbZnJvbTogMl1cbmFsaWFzIFNhbXVlbFdpbGxpcy5NZXRyaWNzLk1ldHJpY1xuYWxpYXMgU2FtdWVsV2lsbGlzLlJlcG9cblxucXVlcnkgPSBmcm9tIG0gaW4gTWV0cmljLFxuICBvcmRlcl9ieTogW2Rlc2M6IG0uZGF0ZV0sXG4gIHNlbGVjdDogJXtcbiAgICBkYXRlOiBtLmRhdGUsXG4gICAgcGF0aDogbS5wYXRoLFxuICAgIHZpc2l0czogbS52aXNpdHMsXG4gIH1cblxuUmVwby5hbGwocXVlcnkpIiwiY29va2llIjoiIiwiY29va2llX3NlY3JldCI6IldFQlNJVEVfUkVMRUFTRV9DT09LSUUiLCJub2RlIjoiIiwibm9kZV9zZWNyZXQiOiJXRUJTSVRFX1JFTEVBU0VfTk9ERSIsIm5vZGVfc2VjcmV0X3ZhbHVlIjpudWxsLCJ1c2VfY29va2llX3NlY3JldCI6dHJ1ZSwidXNlX25vZGVfc2VjcmV0Ijp0cnVlfQ","chunks":null,"kind":"Elixir.Kino.RemoteExecutionCell","livebook_object":"smart_cell"} -->
 
 ```elixir
 require Kino.RPC
@@ -133,4 +133,4 @@ VegaLite.new(width: 700, height: 500)
 |> VegaLite.encode_field(:color, "path")
 ```
 
-<!-- livebook:{"offset":3613,"stamp":{"token":"XCP.0DWNNFayP30yE4iXe6H0oVVCzMikfUJWKzd_NRDyV3c1ucVo99aEJ5xbinndpzTdZ3H4bb-QSeR_2hggp9giKKQnFpctiGa2XdzOYWxuiullC3PUsHwSu_2HA94mDwXzZq13D7pd01fm3miofNqn0hH12xIrLfda8YtAtL1Fl2U8sScBCkP6xxNAtF4205w68lzDk7q9uJOoHrsIpYlcV7i1w9Y0","version":2}} -->
+<!-- livebook:{"offset":3580,"stamp":{"token":"XCP.6gdn830vhtWszWGDoIRqudIiN1N2vhJ9fWtuLbgoluldDYZd-NMVNdqrmH0ZNodVMs--lvYsHC9u2HawuGb7pNIfTohyzfDp4a3USlVa0-_nUHSf5ErNjs22MjbWGE5Hk0Gfv1D7GWu9Xv3MMdV-4abxsoWLGQBUPaZ5ZCoSY-Zq605GzQSSzmzqow7nI8f_V_TEhKSDyQC5mnxuUmc5ZuM","version":2}} -->
