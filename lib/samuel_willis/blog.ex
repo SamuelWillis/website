@@ -9,7 +9,7 @@ defmodule SamuelWillis.Blog do
     build: Article,
     from: Application.app_dir(:samuel_willis, "priv/articles/**/*.md"),
     as: :articles,
-    # html_converter: SamuelWillis.Blog.MDExConverter,
+    html_converter: SamuelWillis.Blog.MDExConverter,
     highlighters: []
 
   # The @articles variable is first defined by NimblePublisher.

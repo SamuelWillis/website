@@ -7,13 +7,13 @@
 # This file is based on these images:
 #
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
-#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20210902-slim - for the release image
+#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bookworm - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: hexpm/elixir:1.14.1-erlang-25.0.2-debian-bullseye-20210902-slim
+#   - Ex: hexpm/elixir:1.19.3-erlang-28.1.1-debian-bookworm-20260112-slim
 #
 ARG ELIXIR_VERSION=1.19.3
 ARG OTP_VERSION=28.1.1
-ARG DEBIAN_VERSION=bullseye-20251117-slim
+ARG DEBIAN_VERSION=bookworm-20260112-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
