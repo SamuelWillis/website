@@ -2,15 +2,31 @@ defmodule SamuelWillisWeb.HomeLive do
   use SamuelWillisWeb, :live_view
 
   @images [
-    %{name: "mammoth.jpg", alt: "Image of a snowy mountain in the Canadian Rockies"},
-    %{name: "mountain.jpg", alt: "Image of a snow capped mountain in British Columbia"},
-    %{name: "road.jpg", alt: "Image of an abandoned road"},
-    %{name: "rock.jpg", alt: "Image of a person bouldering"},
-    %{name: "train.jpg", alt: "Image of a train track crossing above a valley river"},
-    %{name: "valley.jpg", alt: "Image of a valley with a large river in it"},
-    %{name: "waterfall.jpg", alt: "Image of a waterfall"},
-    %{name: "fountain.jpg", alt: "Image of a fountain in CDMX"},
-    %{name: "house.jpg", alt: "Image of a house"}
+    %{
+      name: "mammoth.jpg",
+      sm_name: "mammoth-sm.jpg",
+      alt: "Image of a snowy mountain in the Canadian Rockies"
+    },
+    %{
+      name: "mountain.jpg",
+      sm_name: "mountain-sm.jpg",
+      alt: "Image of a snow capped mountain in British Columbia"
+    },
+    %{name: "road.jpg", sm_name: "road-sm.jpg", alt: "Image of an abandoned road"},
+    %{name: "rock.jpg", sm_name: "rock-sm.jpg", alt: "Image of a person bouldering"},
+    %{
+      name: "train.jpg",
+      sm_name: "train-sm.jpg",
+      alt: "Image of a train track crossing above a valley river"
+    },
+    %{
+      name: "valley.jpg",
+      sm_name: "valley-sm.jpg",
+      alt: "Image of a valley with a large river in it"
+    },
+    %{name: "waterfall.jpg", sm_name: "waterfall-sm.jpg", alt: "Image of a waterfall"},
+    %{name: "fountain.jpg", sm_name: "fountain-sm.jpg", alt: "Image of a fountain in CDMX"},
+    %{name: "house.jpg", sm_name: "house-sm.jpg", alt: "Image of a house"}
   ]
 
   @impl Phoenix.LiveView
@@ -34,7 +50,9 @@ defmodule SamuelWillisWeb.HomeLive do
           phx-connected={JS.show()}
         >
           <img
-            src={~p"/images/#{@image.name}"}
+            src={~p"/images/#{@image.sm_name}"}
+            srcset={"#{~p"/images/#{@image.sm_name}"} 384w, #{~p"/images/#{@image.name}"} 768w"}
+            sizes="384px"
             class="w-96 object-cover focus:outline-none"
             alt={@image.alt}
           />
