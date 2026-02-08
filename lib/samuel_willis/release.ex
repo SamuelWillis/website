@@ -18,11 +18,13 @@ defmodule SamuelWillis.Release do
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
-  def repos do
+  defp repos do
     Application.fetch_env!(@app, :ecto_repos)
   end
 
   defp load_app do
-    Application.load(@app)
+    # Many platforms require SSL when connecting to the database
+    Application.ensure_all_started(:ssl)
+    Application.ensure_loaded(@app)
   end
 end

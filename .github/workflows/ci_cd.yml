@@ -106,6 +106,6 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_WEBSITE_API_TOKEN }}
 
       - name: Deploy metrics app
-        run: flyctl deploy --remote-only ./livebook/
+        run: flyctl deploy --depot=false ./livebook/
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_METRICS_API_TOKEN }}
