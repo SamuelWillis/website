@@ -45,14 +45,19 @@ RUN mkdir config
 COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
+# Install tailwind and esbuild standalone binaries.
+# Done as a separate cached layer so they don't need to be
+# re-downloaded from GitHub/npm on every build.
+RUN mix assets.setup
+
 COPY priv priv
 
 COPY lib lib
 
-COPY assets assets
-
 # Compile the release
 RUN mix compile
+
+COPY assets assets
 
 # compile assets
 RUN mix assets.deploy

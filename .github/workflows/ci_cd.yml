@@ -98,10 +98,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
 
       - name: Deploy website
-        run: flyctl deploy --remote-only
+        run: flyctl deploy --depot=false
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_WEBSITE_API_TOKEN }}
 
