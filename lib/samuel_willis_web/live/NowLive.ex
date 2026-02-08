@@ -11,19 +11,16 @@ defmodule SamuelWillisWeb.NowLive do
             🔨 What I'm doing now
           </h1>
         </header>
-        <p>
-          Currently I am:
-        </p>
         <ul>
           <li>
             Moving back to Victoria, BC
           </li>
           <li>
-            Bulding a 1952 Panhead
+            Building a 1952 Panhead
           </li>
         </ul>
         <p class="not-prose text-sm leading-normal text-zinc-600">
-          Updated September 7, 2025
+          Updated Feb 7, 2026
         </p>
       </article>
     </Layouts.app>
