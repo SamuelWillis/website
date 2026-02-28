@@ -5,28 +5,66 @@ defmodule SamuelWillisWeb.HomeLive do
     %{
       name: "mammoth.jpg",
       sm_name: "mammoth-sm.jpg",
-      alt: "Image of a snowy mountain in the Canadian Rockies"
+      alt: "Image of a snowy mountain in the Canadian Rockies",
+      width: 768,
+      height: 512
     },
     %{
       name: "mountain.jpg",
       sm_name: "mountain-sm.jpg",
-      alt: "Image of a snow capped mountain in British Columbia"
+      alt: "Image of a snow capped mountain in British Columbia",
+      width: 768,
+      height: 512
     },
-    %{name: "road.jpg", sm_name: "road-sm.jpg", alt: "Image of an abandoned road"},
-    %{name: "rock.jpg", sm_name: "rock-sm.jpg", alt: "Image of a person bouldering"},
+    %{
+      name: "road.jpg",
+      sm_name: "road-sm.jpg",
+      alt: "Image of an abandoned road",
+      width: 768,
+      height: 512
+    },
+    %{
+      name: "rock.jpg",
+      sm_name: "rock-sm.jpg",
+      alt: "Image of a person bouldering",
+      width: 768,
+      height: 512
+    },
     %{
       name: "train.jpg",
       sm_name: "train-sm.jpg",
-      alt: "Image of a train track crossing above a valley river"
+      alt: "Image of a train track crossing above a valley river",
+      width: 768,
+      height: 512
     },
     %{
       name: "valley.jpg",
       sm_name: "valley-sm.jpg",
-      alt: "Image of a valley with a large river in it"
+      alt: "Image of a valley with a large river in it",
+      width: 768,
+      height: 512
     },
-    %{name: "waterfall.jpg", sm_name: "waterfall-sm.jpg", alt: "Image of a waterfall"},
-    %{name: "fountain.jpg", sm_name: "fountain-sm.jpg", alt: "Image of a fountain in CDMX"},
-    %{name: "house.jpg", sm_name: "house-sm.jpg", alt: "Image of a house"}
+    %{
+      name: "waterfall.jpg",
+      sm_name: "waterfall-sm.jpg",
+      alt: "Image of a waterfall",
+      width: 768,
+      height: 512
+    },
+    %{
+      name: "fountain.jpg",
+      sm_name: "fountain-sm.jpg",
+      alt: "Image of a fountain in CDMX",
+      width: 768,
+      height: 512
+    },
+    %{
+      name: "house.jpg",
+      sm_name: "house-sm.jpg",
+      alt: "Image of a house",
+      width: 768,
+      height: 512
+    }
   ]
 
   @impl Phoenix.LiveView
@@ -51,10 +89,17 @@ defmodule SamuelWillisWeb.HomeLive do
         >
           <img
             src={~p"/images/#{@image.sm_name}"}
-            srcset={"#{~p"/images/#{@image.sm_name}"} 384w, #{~p"/images/#{@image.name}"} 768w"}
-            sizes="384px"
+            srcset={
+              "#{~p"/images/#{@image.sm_name}"} 384w, #{~p"/images/#{@image.name}"} 768w"
+            }
+            sizes="(min-width: 640px) 50vw, 100vw"
+            width={@image.width}
+            height={@image.height}
             class="w-96 object-cover focus:outline-none"
             alt={@image.alt}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
           />
           <div class="absolute inset-0 flex justify-center items-center bg-base-100/60 p-6 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
             <.icon name="hero-arrow-path" class="size-15 refresh-icon" />
