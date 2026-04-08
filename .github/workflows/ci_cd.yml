@@ -98,7 +98,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      - uses: superfly/flyctl-actions/setup-flyctl@1.6
 
       - name: Deploy website
         run: flyctl deploy --depot=false
