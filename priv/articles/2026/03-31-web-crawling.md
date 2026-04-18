@@ -3,7 +3,7 @@
   author: "Samuel Willis",
   tags: ~w(projects booklearning smaht learning elixir breadth-first-search),
   description: "Web crawling but very very simple.",
-  published: false
+  published: true
 }
 ---
 
@@ -38,7 +38,8 @@ This took me longer than I care to admit...
 
 After getting way too distracted by choosing the best HTML parser in the Elixir
 ecosystem I realized I was letting minutia distract me from attempting to solve
-the prompt (I used [Floki](https://hexdocs.pm/floki/Floki.html)...)
+the prompt (I ended up using the standard
+[Floki](https://hexdocs.pm/floki/Floki.html)...)
 
 On the first pass I hit the following:
 
@@ -162,11 +163,11 @@ defmodule WebCrawler do
 
   # At max depth
   defp crawl(visit, visited, %{current_depth: max_depth, max_depth: max_depth}) do
-    # Here the visited URIs AND the URIs to visit are returned to satisfy this
-    # behaviour:
-    # Accepts a maximum depth to recurse to (e.g. "1" would be fetch
-    # the HTML page and all resources like images and script associated with it
-    # but don't visit any outgoing anchor links;
+    # Here the visited URIs AND the URIs to visit are returned to satisfy the
+    # following spec:
+    # > Accepts a maximum depth to recurse to (e.g. "1" would be fetch
+    # > the HTML page and all resources like images and script associated with it
+    # > but don't visit any outgoing anchor links;
     visited ++ visit
   end
   
@@ -210,7 +211,14 @@ Which seems silly in hindsight...
 Webcrawling as a challenge is also quite intersting and this provided a very small peek into that world.
 Skimming this [crawler-test.com](https://crawler-test.com/) site shows a mass of edge cases to handle.
 
-There's also some really cool optimization
+There's also some really cool optimization side quests to go on! 
+
+Overall, this was an interesting challenge. I did not hit all the bench marks
+but I can see myself returning here to do things like:
+
+1. Handle things that aren't anchor tags
+2. Add some more juice to the concurrency
+3. Add some better web crawling manners, such as respecting `robots.txt` files
 
 ## What's next
 
