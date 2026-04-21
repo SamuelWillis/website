@@ -124,8 +124,8 @@ defmodule WebCrawler do
 end
 ```
 
-**A note:** An astute reader may notice that the above concurrency is bound by the
-slowest request... There's improvements to be made.
+**A note:** An astute reader may notice that the above concurrency speed is
+bound by the slowest request... There's improvements to be made.
 
 ## Adding depth limits
 
@@ -196,10 +196,12 @@ With a max depth of 0, then `vistied = []`, `visit = [$URI_A]`,
 and all URIs at depth 0 have been visited, ie: none.
 
 With a max depth of 1, then `vistied = [$URI_A]`, `visit = [$URI_B, $URI_C]`,
-and all URIs at depth 1 have been visited.
+meaning all URIs at depth 1 have been visited and we have collected the URIs at
+depth 2.
 
 With a max depth of 2, then `vistied = [$URI_A, $URI_B, $URI_C]`, `visit =
-[$URI_D, $URI_E]`, and all URIs at depth 1 have been visited.
+[$URI_D, $URI_E]`, meaning all URIs at depth 2 have been visited and we have
+collected the URIs at depth 3.
 
 And so on.
 
