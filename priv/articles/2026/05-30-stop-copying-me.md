@@ -126,7 +126,6 @@ Like this:
 
 
 ```bash
-
 elixir echo_server.exs [-t|-u]
 ```
 
@@ -147,3 +146,59 @@ case System.argv() do
     raise "Unkown args sepcified: #{inspect(args)}"
 end
 ``` 
+
+## UDP Support
+
+We will start with UDP as it is simpler than TCP. This is because we do not need
+to account for concurrent connections.
+
+So for UDP we need to open up the desired port and then accept connections.
+When a packet is received we will parse out the relevant information to send
+what was received back to it.
+We will use erlang's
+[gen_udp](https://www.erlang.org/doc/apps/kernel/gen_udp.html) module to support
+this.
+
+Like so:
+
+```elixir
+
+defmodule Echo.Server.UDP do
+  require Logger
+
+  def echo(port) do
+    # Open up the port locally.
+    {:ok, socket} =
+      :gen_udp.open(port, [:binary, active: false, reuseaddr: true])
+
+    accept(socket)
+  end
+
+  @doc """
+  Accept UDP clients.
+
+  In contrast to TCP, there is no connection.
+  This means that it does not need to account for multiple clients trying to
+  connect.
+
+  It does mean that it needs to parse out the client's address + port from the
+  packet so it can respond to the correct client.
+  """
+  defp accept(socket) do
+    case :gen_udp.recv(socket, 0) do
+      {:ok, {address, port, packet}} ->
+        :gen_udp.send(socket, address, port, packet)
+        accept(socket)
+
+      error ->
+        Logger.error("Error #{error}")
+        accept(socket)
+    end
+  end
+end
+```
+
+And we're done! Hooray, UDP checked off.
+
+## TCP Support
+
