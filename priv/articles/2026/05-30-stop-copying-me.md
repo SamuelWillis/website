@@ -3,15 +3,15 @@
   author: "Samuel Willis",
   tags: ~w(projects booklearning smaht learning),
   description: "A simple echo server",
-  published: false
+  published: true
 }
 ---
 
 Welcome to the second installment of my manual book learning bootcamp.
 
-Today I am going to talk through a simple TCP Echo Server.
+Today I am going to talk through a simple Echo Server.
 
-TCP Echo Servers echo back any data it receives to the client, until the client
+Echo Servers echo back any data it receives to the client, until the client
 disconnects.
 Check out [RFC 862: STD 20: Echo
 Protocol](https://www.rfc-editor.org/info/rfc862/) for the full details.
@@ -21,9 +21,9 @@ with a couple different communication protocols on the internet.
 
 For this echo server, a few basic things are needed:
 
-1. Connections from multiple clients
-2. TCP connections
-3. UDP connections
+1. TCP connections
+2. UDP connections
+3. Connections from multiple clients
 
 When the echo server receives some data, it should send that data back.
 It should also allow for multiple connections.
@@ -33,6 +33,7 @@ Pretty simple!
 # TCP? UDP? 
 
 TCP & UDP are two transport protocols used in both the OSI and TCP/IP models.
+
 They live at the Transport Layer and are responsible for end to end
 communication between applications.
 
@@ -80,7 +81,8 @@ You can view all the code
 
 ## Server module
 
-The entry point to the server will be a simple module. It will delegate to a TCP or UDP module as appropriate.
+The entry point to the server will be a simple module. It will delegate to a TCP
+or UDP module as appropriate.
 
 Here it is:
 
@@ -119,8 +121,8 @@ end
 The server will be a single elixir script that can be started with TCP via a
 `-t` arg.
 UDP will be supported with a `-u` arg.
-Omitting an argument will default to TCP.
 
+Omitting an argument will default to TCP.
 
 Like this:
 
@@ -129,7 +131,7 @@ Like this:
 elixir echo_server.exs [-t|-u]
 ```
 
-Here's how that's handled:
+This is handled in the main script like so:
 
 ```elixir
 case System.argv() do
@@ -153,16 +155,16 @@ We will start with UDP as it is simpler than TCP. This is because we do not need
 to account for concurrent connections.
 
 So for UDP we need to open up the desired port and then accept connections.
+
 When a packet is received we will parse out the relevant information to send
+
 what was received back to it.
-We will use erlang's
-[gen_udp](https://www.erlang.org/doc/apps/kernel/gen_udp.html) module to support
-this.
+Elrang's [gen_udp](https://www.erlang.org/doc/apps/kernel/gen_udp.html) module
+will provide the functions needed for communicating over a UDP socket.
 
 Like so:
 
 ```elixir
-
 defmodule Echo.Server.UDP do
   require Logger
 
@@ -202,3 +204,80 @@ And we're done! Hooray, UDP checked off.
 
 ## TCP Support
 
+TCP is a little more compicated and requires us to wire up some concurrency.
+
+Elixir's first class support of concurrency makes this super easy!
+For each client connection a [Task](https://elixir.hexdocs.pm/Task.html) will be
+started under a [Task Supervisor](https://elixir.hexdocs.pm/Task.Supervisor.html).
+
+The Task Supervisor will allow us to dynamically spawn connection handling as
+clients attempt to connect to our server.
+
+Finally, erlang's [:gen_tcp](https://www.erlang.org/doc/apps/kernel/gen_tcp.html)
+will provide the functions needed for communicating over a TCP socket.
+
+```elixir
+defmodule Echo.Server.TCP do
+  require Logger
+
+  @connection_supervisor ConnectionSupervisor
+
+  def echo(port) do
+    {:ok, _pid} = Task.Supervisor.start_link(name: @connection_supervisor)
+
+    {:ok, socket} =
+      :gen_tcp.listen(port, [:binary, packet: :line, active: false, reuseaddr: true])
+
+    Logger.info("Listening on #{port}")
+
+    accept(socket)
+  end
+
+  @doc """
+  Accept TCP clients.
+
+  With TCP, there is a connection between the client and the server.
+
+  This means that without some form of concurrency, a single connection would
+  block other clients.
+
+  packets  Thus, when a client is accepted, a child task process is started and the
+  connection is handed off to that process.
+  Allowing this parent process to continue to accept more clients.
+  """
+  defp accept(socket) do
+    {:ok, client} = :gen_tcp.accept(socket)
+    {:ok, pid} = Task.Supervisor.start_child(@connection_supervisor, fn -> serve(client) end)
+    :ok = :gen_tcp.controlling_process(client, pid)
+
+    accept(socket)
+  end
+
+  defp serve(client) do
+    with {:ok, packet} <- :gen_tcp.recv(client, 0),
+         reverse <- packet |> String.slice(0..-2//1) |> String.reverse() |> Kernel.<>("\n"),
+         :ok <- :gen_tcp.send(client, reverse) do
+      serve(client)
+    else
+      error -> error
+    end
+  end
+end
+```
+
+And there we go!
+
+# Conclusion
+
+With the all the above code slapped into a `ehco_server.exs` you've got yourself
+a real simple local echo server that handles UDP & TCP connections from multiple
+clients.
+
+Hopefully you picked up a bit of new knowledge about the different comminication
+protocols and/or learnt a little but about how Elixir/Erlang supports these
+protocols under the hood.
+
+As usual, Elixir made supporting concurrency _extremely_ easy and we were able
+to spin something up pretty quick!
+
+I hope you enjoyed this small article and will tune in next time!
