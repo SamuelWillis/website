@@ -11,10 +11,12 @@ defmodule SamuelWillisWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug SamuelWillisWeb.Plugs.AssignPageVisits
+    plug SamuelWillisWeb.Plugs.Bots.PutTDMReservationHeaders
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug SamuelWillisWeb.Plugs.Bots.PutTDMReservationHeaders
   end
 
   scope "/", SamuelWillisWeb do
