@@ -17,10 +17,6 @@ defmodule SamuelWillisWeb.AboutLive do
           I am an avid cyclist who can generally be found outside in my off time.
         </p>
         <p>
-          Currently residing on the traditional territories of the Skwxwú7mesh-ulh
-          Temíx̱w.
-        </p>
-        <p>
           If you'd like to get in touch you can send me an
           <.link class="link link-primary" href="mailto:hello@samuelwillis.dev=Hey!">email</.link>
           or reach me on
