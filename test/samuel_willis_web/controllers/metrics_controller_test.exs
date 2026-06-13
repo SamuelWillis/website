@@ -34,7 +34,7 @@ defmodule SamuelWillisWeb.MetricsControllerTest do
     today = Date.utc_today()
 
     metric_attrs =
-      for number_of_days_ago <- 0..-7, path <- @paths, into: [] do
+      for number_of_days_ago <- -7..0, path <- @paths, into: [] do
         date = Date.add(today, number_of_days_ago)
         visits = Enum.random(1..20)
 
