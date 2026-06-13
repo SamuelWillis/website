@@ -34,7 +34,7 @@ defmodule SamuelWillis.MetricsTest do
       today = Date.utc_today()
 
       metric_attrs =
-        for number_of_days_ago <- -1..-7 do
+        for number_of_days_ago <- -7..-1 do
           date = Date.add(today, number_of_days_ago)
           visits = Enum.random(1..20)
 
@@ -56,7 +56,7 @@ defmodule SamuelWillis.MetricsTest do
       today = Date.utc_today()
 
       metric_attrs =
-        for number_of_days_ago <- -1..-7 do
+        for number_of_days_ago <- -7..-1 do
           date = Date.add(today, number_of_days_ago)
           visits = Enum.random(1..20)
 
@@ -71,7 +71,7 @@ defmodule SamuelWillis.MetricsTest do
 
       metrics = Metrics.get_weekly_metrics()
 
-      for number_of_days_ago <- -1..-7 do
+      for number_of_days_ago <- -7..-1 do
         date = Date.add(today, number_of_days_ago)
         assert is_list(metrics[date])
       end
