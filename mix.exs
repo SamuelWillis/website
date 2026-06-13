@@ -71,7 +71,7 @@ defmodule SamuelWillis.MixProject do
       {:igniter, "~> 0.7", only: [:dev]},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:mdex, "~> 0.11"},
-      {:nimble_publisher, "~> 1.0"},
+      {:nimble_publisher, "~> 2.0"},
       {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 4.1"},
