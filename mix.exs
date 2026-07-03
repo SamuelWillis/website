@@ -72,7 +72,7 @@ defmodule SamuelWillis.MixProject do
       {:lazy_html, ">= 0.1.0", only: :test},
       {:makeup_elixir, ">= 0.0.0", runtime: false},
       {:makeup_erlang, ">= 0.0.0", runtime: false},
-      {:makeup_html, "~> 0.1.0", runtime: false},
+      {:makeup_html, ">= 0.0.0", runtime: false},
       {:nimble_publisher, "~> 2.0"},
       {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.4"},
