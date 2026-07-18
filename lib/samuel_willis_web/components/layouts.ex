@@ -20,7 +20,7 @@ defmodule SamuelWillisWeb.Layouts do
 
   ## Examples
 
-      <Layouts.app flash={@flash}>
+      <Layouts.app flash={@flash} page_visits={@page_visits}>
         <h1>Content</h1>
       </Layouts.app>
 
@@ -64,6 +64,35 @@ defmodule SamuelWillisWeb.Layouts do
         <.page_visits visits={@page_visits} />
       </div>
     </footer>
+    """
+  end
+
+  @doc """
+  Renders game of life layout
+  """
+  attr :flash, :map, required: true, doc: "the map of flash messages"
+
+  attr :current_scope, :map,
+    default: nil,
+    doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
+
+  slot :inner_block, required: true
+
+  def life(assigns) do
+    ~H"""
+    <header class="absolute top-4 left-4 text-primary">
+      <.header>
+        Conway's Game of Life
+      </.header>
+    </header>
+
+    <main class="min-w-screen min-h-screen place-content-center">
+      <div class="flex justify-center">
+        {render_slot(@inner_block)}
+      </div>
+    </main>
+
+    <.flash_group flash={@flash} />
     """
   end
 

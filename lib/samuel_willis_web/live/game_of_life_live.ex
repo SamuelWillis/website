@@ -6,11 +6,11 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash} page_visits={@page_visits}>
+    <Layouts.life flash={@flash}>
       <div class="flex-1 flex justify-center items-center">
         🏗️
       </div>
-    </Layouts.app>
+    </Layouts.life>
     """
   end
 
