@@ -5,26 +5,23 @@ Framework](https://www.phoenixframework.org/)
 
 ## Getting Started
 
-You'll need to have the following things running to work on this codebase:
+To start your Phoenix server:
 
-1. [direnv](#direnv)
-1. [asdf](#asdf) (or Elixir, Erlang, and Node.js)
-1. [Postgres](#postgres)
-
-Assuming the above are installed and running correctly
-
-* Copy `.envrc.sample` to `.envrc` and fill out with your configuration
+* Install required tools (via mise)
+* Setup your `.env` values based on `.env.sample`
 * Run `mix setup` to install and setup dependencies
 * Start Phoenix endpoint with `mix phx.server` or inside IEx with
     `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser and see this wonderful website.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser
+and see this wonderful website.
 
 ## Deployments
 
 This site is hosted on [Fly.io](https://fly.io/) for super simple deployments.
 
-Deployments happen via GitHub Actions and anything pushed/merged to main is deployed to production.
+Deployments happen via GitHub Actions and anything pushed/merged to main is
+deployed to production.
 
 ## Features
 
@@ -32,9 +29,11 @@ This is a small website and only does a couple things.
 
 ### Articles
 
-[Nimble Publisher](https://hexdocs.pm/nimble_publisher/NimblePublisher.html) is used for blog posts/articles.
+[Nimble Publisher](https://hexdocs.pm/nimble_publisher/NimblePublisher.html) is
+used for blog posts/articles.
 
-It's super simple to use and all articles are Markdown files stored in this Repo.
+It's super simple to use and all articles are Markdown files stored in this
+Repo.
 
 You can see them at [`priv/articles`](./priv/articles).
 
@@ -67,3 +66,49 @@ Pretty neat huh?
 Metrics are tracked via [a Plug](./lib/samuel_willis_web/plugs/track_metrics.ex)
 on static pages and [a Hook](./lib/samuel_willis_web/hooks/track_metrics.ex) on
 LiveView pages.
+
+### Game Of Life
+
+Implementation of [Conway's Game of
+Life](https://conwaylife.com/wiki/Conway%27s_Game_of_Life).
+
+It is visible at the `life.` subdomain.
+
+The universe of the Game of Life is an infinite two-dimensional orthogonal grid
+of square cells, each of which is either live or dead.
+
+Each cell interacts with its 8 neighbours, ie: the cells directly horizontally,
+vertically, or diagonally adjecent.
+
+At each step in time, the following transitions occur:
+
+1. Any live cell with fewer than two live neighbours dies, known as
+    _underpopulation_ or _exposure_
+1. Any live cell with more than three live neighbours dies, known as
+    _overpopulation_ or _overcrowding_.
+1. Any live cell with two or three ive neighbours lives, unchanged, to the next
+    generation.
+1. Any dead cell with exactly three live neighbours will come to life.
+
+The game starts with an initial pattern, known as a _seed_, and the above rules
+are applied simultaneously to every cell.
+An application of the rules is called a _generation_ and rules are continuously
+applied to create further generations.
+
+#### Todo
+
+After my ugly first pass I would like to:
+
+1. Add some rendering
+    * How to render between states, it's opaque right now!
+    * Maybe the Universe is a GenServer with its own state and it broadcasts generations
+    * THe above idea is sorta good, start the universe, stop the universe, step the universe
+    * dyanmic spawn needed, Genserver per universe.
+1. Make it a little more performant?
+    * Only store the alive cells?
+    * Do a flattened list of the cells?
+1. Add some dynamic components?
+    * Board sizes?
+    * Different seeds?
+    * Choose your own seeds?
+

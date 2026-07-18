@@ -19,6 +19,14 @@ defmodule SamuelWillisWeb.Router do
     plug SamuelWillisWeb.Plugs.Bots.PutTDMReservationHeaders
   end
 
+  scope "/", SamuelWillisWeb, host: "life." do
+    pipe_through :browser
+
+    live_session :life, on_mount: [Hooks.TrackMetrics, Hooks.AssignPageVisits] do
+      live "/", GameOfLifeLive, :index
+    end
+  end
+
   scope "/", SamuelWillisWeb do
     pipe_through :browser
 
