@@ -1,2 +1,7 @@
 [settings]
   env_file = '.env'
+
+[tools]
+  expert = "0.1.6"
+  erlang = "29.0.3"
+  elixir = "1.20.2-otp-29"
