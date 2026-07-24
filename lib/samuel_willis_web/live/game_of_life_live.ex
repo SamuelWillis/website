@@ -19,6 +19,12 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
           data-y-size={@universe.y_size}
         ></canvas>
         <div class="absolute bottom-4 right-4 flex gap-4">
+          <button class="btn" phx-click="set-current-seed" phx-value-seed="t_tetromino">
+            T TETROMINO
+          </button>
+          <button class="btn" phx-click="set-current-seed" phx-value-seed="pulsar">
+            PULSAR
+          </button>
           <button class="btn btn-ghost btn-error" phx-click="reset">Reset</button>
           <button class="btn btn-primary" phx-click="start" disabled={@simulating}>Start</button>
         </div>
@@ -36,7 +42,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
             return JSON.parse(this.el.dataset.cells);
           },
           baseCellSize() {
-            return 30 *this. ratio();
+            return 20 *this. ratio();
           },
           ratio() {
             return window.devicePixelRatio || 1;
@@ -121,12 +127,14 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    universe = GameOfLife.build(:t_tetromino)
+    current_seed = :t_tetromino
+    universe = GameOfLife.build(current_seed)
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
 
     socket =
       socket
       |> assign(:page_title, "Game of Life")
+      |> assign(:current_seed, current_seed)
       |> assign(:universe, universe)
       |> assign(:cells, cells)
       |> assign(:tick_timer, nil)
@@ -145,10 +153,32 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
-  def handle_event("reset", _unsigned_params, socket) do
+  def handle_event("set-current-seed", unsigned_params, socket) do
     %{tick_timer: tick_timer} = socket.assigns
+    %{"seed" => seed} = unsigned_params
 
-    universe = GameOfLife.build(:t_tetromino)
+    seed = String.to_existing_atom(seed)
+
+    universe = GameOfLife.build(seed)
+    cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
+
+    if is_reference(tick_timer), do: Process.cancel_timer(tick_timer)
+
+    socket =
+      socket
+      |> assign(:universe, universe)
+      |> assign(:current_seed, seed)
+      |> assign(:cells, cells)
+      |> assign(:tick_timer, nil)
+      |> assign(:simulating, false)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("reset", _unsigned_params, socket) do
+    %{current_seed: current_seed, tick_timer: tick_timer} = socket.assigns
+
+    universe = GameOfLife.build(current_seed)
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
 
     if is_reference(tick_timer), do: Process.cancel_timer(tick_timer)
@@ -169,21 +199,14 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     universe = GameOfLife.tick(universe)
 
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
+    tick_timer = Process.send_after(self(), :tick, 500)
 
-    case universe do
-      %{generation: 20} ->
-        {:noreply, socket}
+    socket =
+      socket
+      |> assign(:universe, universe)
+      |> assign(:cells, cells)
+      |> assign(:tick_timer, tick_timer)
 
-      _ ->
-        tick_timer = Process.send_after(self(), :tick, 500)
-
-        socket =
-          socket
-          |> assign(:universe, universe)
-          |> assign(:cells, cells)
-          |> assign(:tick_timer, tick_timer)
-
-        {:noreply, socket}
-    end
+    {:noreply, socket}
   end
 end
