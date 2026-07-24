@@ -74,6 +74,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       |> assign(:page_title, "Game of Life")
       |> assign(:universe, universe)
       |> assign(:cells, cells)
+      |> assign(:tick_timer, nil)
       |> assign(:simulating, false)
 
     {:ok, socket}
@@ -81,18 +82,27 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
 
   @impl Phoenix.LiveView
   def handle_event("start", _unsigned_params, socket) do
-    Process.send_after(self(), :tick, 100)
-    {:noreply, assign(socket, :simulating, true)}
+    timer = Process.send_after(self(), :tick, 100)
+
+    socket =
+      socket |> assign(:tick_timer, timer) |> assign(:simulating, true)
+
+    {:noreply, socket}
   end
 
   def handle_event("reset", _unsigned_params, socket) do
+    %{tick_timer: tick_timer} = socket.assigns
+
     universe = GameOfLife.build(:t_tetromino)
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
+
+    if is_reference(tick_timer), do: Process.cancel_timer(tick_timer)
 
     socket =
       socket
       |> assign(:universe, universe)
       |> assign(:cells, cells)
+      |> assign(:tick_timer, nil)
       |> assign(:simulating, false)
 
     {:noreply, socket}
@@ -100,7 +110,9 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
 
   @impl Phoenix.LiveView
   def handle_info(:tick, socket) do
-    universe = GameOfLife.tick(socket.assigns.universe)
+    %{universe: universe} = socket.assigns
+    universe = GameOfLife.tick(universe)
+
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
 
     case universe do
@@ -108,12 +120,13 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
         {:noreply, socket}
 
       _ ->
+        tick_timer = Process.send_after(self(), :tick, 500)
+
         socket =
           socket
           |> assign(:universe, universe)
           |> assign(:cells, cells)
-
-        Process.send_after(self(), :tick, 500)
+          |> assign(:tick_timer, tick_timer)
 
         {:noreply, socket}
     end
