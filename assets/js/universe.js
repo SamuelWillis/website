@@ -1,14 +1,13 @@
 import { ViewHook } from "phoenix_live_view";
 
 export class Universe extends ViewHook {
+  cells = [];
+
   canvas() {
     return this.el;
   }
   ctx() {
     return this.canvas().getContext("2d");
-  }
-  cells() {
-    return JSON.parse(this.el.dataset.cells);
   }
   baseCellSize() {
     return 20 * this.ratio();
@@ -18,7 +17,11 @@ export class Universe extends ViewHook {
   }
   mounted() {
     this.scaleCanvas();
-    this.updated();
+
+    const handler = this.handleEvent("cells", ({ cells }) => {
+      this.cells = cells;
+      this.updated();
+    });
 
     addEventListener("resize", (event) => {
       this.scaleCanvas();
@@ -50,9 +53,9 @@ export class Universe extends ViewHook {
     ctx.scale(ratio, ratio);
   }
   renderCells() {
+    const cells = this.cells;
     const canvas = this.canvas();
     const ctx = this.ctx();
-    const cells = this.cells();
     const ratio = this.ratio();
     const baseCellSize = this.baseCellSize();
 

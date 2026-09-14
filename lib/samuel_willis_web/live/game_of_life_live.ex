@@ -15,7 +15,6 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
           height="300"
           phx-hook="Universe"
           phx-update="ignore"
-          data-cells={Jason.encode!(@cells)}
           data-x-size={@universe.x_size}
           data-y-size={@universe.y_size}
         ></canvas>
@@ -76,9 +75,9 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       |> assign(:page_title, "Game of Life")
       |> assign(:current_seed, current_seed)
       |> assign(:universe, universe)
-      |> assign(:cells, cells)
       |> assign(:tick_timer, nil)
       |> assign(:simulating, false)
+      |> push_event("cells", %{cells: cells})
 
     {:ok, socket}
   end
@@ -103,6 +102,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       |> assign(:cells, cells)
       |> assign(:tick_timer, nil)
       |> assign(:simulating, false)
+      |> push_event("cells", %{cells: cells})
 
     {:noreply, socket}
   end
@@ -128,6 +128,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
 
   def handle_event("next", _unsigned_params, socket) do
     %{universe: universe} = socket.assigns
+
     universe = GameOfLife.tick(universe)
 
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
@@ -136,6 +137,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       socket
       |> assign(:universe, universe)
       |> assign(:cells, cells)
+      |> push_event("cells", %{cells: cells})
 
     {:noreply, socket}
   end
@@ -151,9 +153,9 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     socket =
       socket
       |> assign(:universe, universe)
-      |> assign(:cells, cells)
       |> assign(:tick_timer, nil)
       |> assign(:simulating, false)
+      |> push_event("cells", %{cells: cells})
 
     {:noreply, socket}
   end
@@ -169,8 +171,8 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     socket =
       socket
       |> assign(:universe, universe)
-      |> assign(:cells, cells)
       |> assign(:tick_timer, tick_timer)
+      |> push_event("cells", %{cells: cells})
 
     {:noreply, socket}
   end
