@@ -80,19 +80,19 @@ defmodule SamuelWillisWeb.Layouts do
 
   def life(assigns) do
     ~H"""
-    <header class="absolute top-4 left-4 text-primary">
+    <div class="bg-error text-primary-content">
       <.header>
-        Conway's Game of Life
+        <span class="px-4 pt-4">
+          Conway's Game of Life
+        </span>
       </.header>
-    </header>
 
-    <main class="min-w-screen min-h-screen place-content-center">
-      <div class="flex justify-center">
-        {render_slot(@inner_block)}
-      </div>
-    </main>
-
-    <.flash_group flash={@flash} />
+      <main class="min-w-screen min-h-screen place-content-center">
+        <div class="flex justify-center">
+          {render_slot(@inner_block)}
+        </div>
+      </main>
+    </div>
     """
   end
 

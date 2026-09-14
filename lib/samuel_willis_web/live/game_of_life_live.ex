@@ -7,7 +7,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
   def render(assigns) do
     ~H"""
     <Layouts.life flash={@flash}>
-      <div class="drawer flex-1 flex justify-center items-center">
+      <div class="flex-1 flex justify-center items-center">
         <input id="settings-drawer-toggle" type="checkbox" class="drawer-toggle" />
         <canvas
           id="universe"
@@ -19,44 +19,33 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
           data-x-size={@universe.x_size}
           data-y-size={@universe.y_size}
         ></canvas>
-        <div class="dock dock-xl">
-          <div></div>
-          <%= if @simulating do %>
-            <button phx-click="reset">
-              <.icon name="hero-stop" />
-              <span class="dock-label">Stop</span>
-            </button>
-          <% else %>
-            <button phx-click="start">
-              <.icon name="hero-play" />
-              <span class="dock-label">Start</span>
-            </button>
-          <% end %>
 
-          <label for="settings-drawer-toggle">
-            <.icon name="hero-adjustments-horizontal" />
-            <span class="dock-label">Settings</span>
-          </label>
-        </div>
+        <div class="fab">
+          <div tabindex="0" role="button" class="btn btn-lg btn-info btn-circle">
+            <.icon name="hero-plus" />
+          </div>
 
-        <div id="settings-drawer" class="drawer-side">
-          <label for="settings-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-          <ul class="menu bg-primary text-primary-content min-h-full w-80 p-4">
-            <li class="menu-title text-primary-content uppercase">Starting Seed</li>
-            <li>
-              <button
-                phx-click="set-current-seed"
-                phx-value-seed="t_tetromino"
-              >
-                T Tetromino
+          <div class="fab-main-action">
+            <%= if @simulating do %>
+              Stop
+              <button class="btn btn-info btn-lg btn-circle" phx-click="reset">
+                <.icon name="hero-stop" />
               </button>
-            </li>
-            <li>
-              <button phx-click="set-current-seed" phx-value-seed="pulsar">
-                Pulsar
+            <% else %>
+              Start
+              <button class="btn btn-info btn-lg btn-circle" phx-click="start" disabled={@simulating}>
+                <.icon name="hero-play" />
               </button>
-            </li>
-          </ul>
+            <% end %>
+          </div>
+          <div :for={seed <- GameOfLife.seeds()}>
+            {seed_name(seed)}
+            <button
+              class="btn btn-info btn-lg btn-circle"
+              phx-click="set-current-seed"
+              phx-value-seed={seed}
+            >{seed |> seed_name() |> String.first()}</button>
+          </div>
         </div>
       </div>
     </Layouts.life>
@@ -148,4 +137,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
 
     {:noreply, socket}
   end
+
+  defp seed_name(:t_tetromino), do: "T Tetromino"
+  defp seed_name(:pulsar), do: "Pulsar"
 end

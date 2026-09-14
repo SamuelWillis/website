@@ -5,7 +5,9 @@ defmodule SamuelWillis.GameOfLife do
   """
   alias SamuelWillis.GameOfLife.Universe
 
-  @valid_seeds [:t_tetromino]
+  @valid_seeds [:t_tetromino, :pulsar]
+
+  def seeds, do: @valid_seeds
 
   def build(seed_name) do
     seed_name

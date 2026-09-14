@@ -1,4 +1,4 @@
-import { ViewHook } from "phoenix_live_view"
+import { ViewHook } from "phoenix_live_view";
 
 export class Universe extends ViewHook {
   canvas() {
@@ -22,7 +22,7 @@ export class Universe extends ViewHook {
 
     addEventListener("resize", (event) => {
       this.scaleCanvas();
-      this.renderCells()
+      this.renderCells();
     });
   }
   updated() {
@@ -58,7 +58,8 @@ export class Universe extends ViewHook {
 
     this.clearCanvas();
     ctx.save();
-    ctx.fillStyle = "green";
+    // --color-success
+    ctx.fillStyle = "rgb(105.06, 254.08, 195.35";
 
     // Calculate initial co-ordinates so that universe is centered on screen.
     const initialX = -1 * baseCellSize * (this.el.dataset.xSize / 2);
