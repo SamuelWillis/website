@@ -18,11 +18,11 @@ export class Universe extends ViewHook {
   }
   mounted() {
     this.scaleCanvas();
-    this.renderCells();
+    this.updated();
 
     addEventListener("resize", (event) => {
       this.scaleCanvas();
-      this.renderCells();
+      this.updated();
     });
   }
   updated() {

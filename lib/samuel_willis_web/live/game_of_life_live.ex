@@ -26,10 +26,10 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
           </div>
 
           <div class="fab-main-action">
-            <%= if @simulating do %>
-              Stop
-              <button class="btn btn-info btn-lg btn-circle" phx-click="reset">
-                <.icon name="hero-stop" />
+            <%= if is_reference(@tick_timer) do %>
+              Pause
+              <button class="btn btn-info btn-lg btn-circle" phx-click="pause">
+                <.icon name="hero-pause" />
               </button>
             <% else %>
               Start
@@ -37,6 +37,19 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
                 <.icon name="hero-play" />
               </button>
             <% end %>
+          </div>
+
+          <div>
+            Stop
+            <button class="btn btn-info btn-lg btn-circle" phx-click="reset">
+              <.icon name="hero-stop" />
+            </button>
+          </div>
+          <div>
+            Tick
+            <button class="btn btn-info btn-lg btn-circle" phx-click="next">
+              <.icon name="hero-chevron-double-right" />
+            </button>
           </div>
           <div :for={seed <- GameOfLife.seeds()}>
             {seed_name(seed)}
@@ -98,7 +111,31 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     timer = Process.send_after(self(), :tick, 500)
 
     socket =
-      socket |> assign(:tick_timer, timer) |> assign(:simulating, true)
+      socket
+      |> assign(:tick_timer, timer)
+      |> assign(:simulating, true)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("pause", _unsigned_params, socket) do
+    %{tick_timer: tick_timer} = socket.assigns
+
+    if is_reference(tick_timer), do: Process.cancel_timer(tick_timer)
+
+    {:noreply, assign(socket, :tick_timer, nil)}
+  end
+
+  def handle_event("next", _unsigned_params, socket) do
+    %{universe: universe} = socket.assigns
+    universe = GameOfLife.tick(universe)
+
+    cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
+
+    socket =
+      socket
+      |> assign(:universe, universe)
+      |> assign(:cells, cells)
 
     {:noreply, socket}
   end
