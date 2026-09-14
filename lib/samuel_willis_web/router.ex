@@ -23,7 +23,6 @@ defmodule SamuelWillisWeb.Router do
     pipe_through :browser
 
     live_session :life,
-      root_layout: {SamuelWillisWeb.Layouts, :life_root},
       on_mount: [Hooks.TrackMetrics, Hooks.AssignPageVisits] do
       live "/", GameOfLifeLive, :index
     end
