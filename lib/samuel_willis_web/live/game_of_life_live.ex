@@ -95,7 +95,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
   end
 
   def handle_event("start", _unsigned_params, socket) do
-    timer = Process.send_after(self(), :tick, 100)
+    timer = Process.send_after(self(), :tick, 500)
 
     socket =
       socket |> assign(:tick_timer, timer) |> assign(:simulating, true)
