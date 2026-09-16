@@ -20,19 +20,23 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
         ></canvas>
 
         <div class="fab">
-          <div tabindex="0" role="button" class="btn btn-lg btn-info btn-circle">
+          <div tabindex="0" role="button" class="btn btn-xl btn-info btn-circle">
             <.icon name="hero-plus" />
           </div>
 
           <div class="fab-main-action">
             <%= if is_reference(@tick_timer) do %>
               Pause
-              <button class="btn btn-info btn-lg btn-circle" phx-click="pause">
+              <button class="btn btn-info btn-xl btn-circle" phx-click="pause">
                 <.icon name="hero-pause" />
               </button>
             <% else %>
               Start
-              <button class="btn btn-info btn-lg btn-circle" phx-click="start" disabled={@simulating}>
+              <button
+                class="btn btn-info btn-xl btn-circle"
+                phx-click="start"
+                disabled={is_reference(@tick_timer)}
+              >
                 <.icon name="hero-play" />
               </button>
             <% end %>
@@ -40,20 +44,20 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
 
           <div>
             Stop
-            <button class="btn btn-info btn-lg btn-circle" phx-click="reset">
+            <button class="btn btn-info btn-xl btn-circle" phx-click="reset">
               <.icon name="hero-stop" />
             </button>
           </div>
           <div>
             Tick
-            <button class="btn btn-info btn-lg btn-circle" phx-click="next">
+            <button class="btn btn-info btn-xl btn-circle" phx-click="next">
               <.icon name="hero-chevron-double-right" />
             </button>
           </div>
           <div :for={seed <- GameOfLife.seeds()}>
             {seed_name(seed)}
             <button
-              class="btn btn-info btn-lg btn-circle"
+              class="btn btn-info btn-xl btn-circle"
               phx-click="set-current-seed"
               phx-value-seed={seed}
             >{seed |> seed_name() |> String.first()}</button>
@@ -76,7 +80,6 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       |> assign(:current_seed, current_seed)
       |> assign(:universe, universe)
       |> assign(:tick_timer, nil)
-      |> assign(:simulating, false)
       |> push_event("cells", %{cells: cells})
 
     {:ok, socket}
@@ -101,7 +104,6 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       |> assign(:current_seed, seed)
       |> assign(:cells, cells)
       |> assign(:tick_timer, nil)
-      |> assign(:simulating, false)
       |> push_event("cells", %{cells: cells})
 
     {:noreply, socket}
@@ -110,10 +112,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
   def handle_event("start", _unsigned_params, socket) do
     timer = Process.send_after(self(), :tick, 500)
 
-    socket =
-      socket
-      |> assign(:tick_timer, timer)
-      |> assign(:simulating, true)
+    socket = assign(socket, :tick_timer, timer)
 
     {:noreply, socket}
   end
@@ -154,7 +153,6 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
       socket
       |> assign(:universe, universe)
       |> assign(:tick_timer, nil)
-      |> assign(:simulating, false)
       |> push_event("cells", %{cells: cells})
 
     {:noreply, socket}
