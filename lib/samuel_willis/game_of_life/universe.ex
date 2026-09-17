@@ -66,36 +66,22 @@ defmodule SamuelWillis.GameOfLife.Universe do
           state = cell_state(universe, x, y)
           live_neighbours = live_neighbours(universe, x, y)
 
-          case({state, live_neighbours}) do
-            # Alive, 2 neighbours -> alive
-            {1, 2} -> 1
-            # Alive, 3 neighbours -> alive
-            {1, 3} -> 1
-            # Dead, 3 neighbours -> alive
-            {0, 3} -> 1
-            # All  other cases -> dead
-            {_, _} -> 0
-          end
+          new_state(state, live_neighbours)
         end
       end
 
     %{universe | cells: transform_cells(cells), generation: generation + 1}
   end
 
-  # Transform the cells from a list to tuples - O(x_size * y_size)
-  defp transform_cells(cells) do
-    cells |> Enum.map(&List.to_tuple/1) |> List.to_tuple()
-  end
-
-  # Get the cell's state - O(1)
-  defp cell_state(%{cells: cells}, x, y) do
+  @doc false
+  def cell_state(%{cells: cells}, x, y) do
     cells
     |> elem(y)
     |> elem(x)
   end
 
-  # Calculate the live neighbours.
-  defp live_neighbours(universe, current_x, current_y) do
+  @doc false
+  def live_neighbours(universe, current_x, current_y) do
     x_range = (current_x - 1)..(current_x + 1)
     x_valid_range = 0..(universe.x_size - 1)
 
@@ -109,6 +95,22 @@ defmodule SamuelWillis.GameOfLife.Universe do
         reduce: 0 do
       acc -> acc + cell_state(universe, x, y)
     end
+  end
+
+  @doc false
+  def new_state(_current_state, _live_neighbours)
+  # Alive, 2 neighbours -> alive
+  def new_state(1, 2), do: 1
+  # Alive, 3 neighbours -> alive
+  def new_state(1, 3), do: 1
+  # Dead, 3 neighbours -> alive
+  def new_state(0, 3), do: 1
+  # All other cases -> dead
+  def new_state(_, _), do: 0
+
+  # Transform the cells from a list to tuples - O(x_size * y_size)
+  defp transform_cells(cells) do
+    cells |> Enum.map(&List.to_tuple/1) |> List.to_tuple()
   end
 
   defimpl Inspect do
