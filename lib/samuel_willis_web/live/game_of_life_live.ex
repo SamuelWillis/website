@@ -54,7 +54,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
               <.icon name="hero-chevron-double-right" />
             </button>
           </div>
-          <div :for={seed <- GameOfLife.seeds()}>
+          <div :for={seed <- @seeds}>
             {seed_name(seed)}
             <button
               class="btn btn-info btn-xl btn-circle"
@@ -77,6 +77,7 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     socket =
       socket
       |> assign(:page_title, "Game of Life")
+      |> assign(:seeds, GameOfLife.seeds())
       |> assign(:current_seed, current_seed)
       |> assign(:universe, universe)
       |> assign(:tick_timer, nil)
@@ -175,6 +176,9 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     {:noreply, socket}
   end
 
+  defp seed_name(:blink), do: "Blink"
+  defp seed_name(:beacon), do: "Beacon"
   defp seed_name(:t_tetromino), do: "T Tetromino"
   defp seed_name(:pulsar), do: "Pulsar"
+  defp seed_name(:queen_bee), do: "Queen Bee"
 end
