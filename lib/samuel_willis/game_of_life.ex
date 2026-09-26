@@ -19,19 +19,6 @@ defmodule SamuelWillis.GameOfLife do
     Universe.next_generation(universe)
   end
 
-  def simulate(seed_name) when seed_name in @valid_seeds do
-    universe = build(seed_name)
-
-    do_simulate(universe)
-  end
-
-  # Hardcode 10 generation loop
-  defp do_simulate(%{generation: 20} = universe), do: universe
-
-  defp do_simulate(universe) do
-    universe |> Universe.next_generation() |> do_simulate()
-  end
-
   defp get_seed(:t_tetromino) do
     [
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
