@@ -74,6 +74,8 @@ defmodule SamuelWillisWeb.GameOfLifeLive do
     universe = GameOfLife.build(current_seed)
     cells = universe.cells |> Tuple.to_list() |> Enum.map(&Tuple.to_list/1)
 
+    dbg(GameOfLife.seeds())
+
     socket =
       socket
       |> assign(:page_title, "Game of Life")
