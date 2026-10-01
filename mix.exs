@@ -57,7 +57,7 @@ defmodule SamuelWillis.MixProject do
       {:dns_cluster, "~> 0.3.0"},
       {:ecto_sql, "~> 3.10"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
-      {:ex_check, "~> 0.16.0", only: [:dev, :test], runtime: false},
+      {:ex_check, "~> 0.17.0", only: [:dev, :test], runtime: false},
       {:finch, "~> 0.13"},
       {:gettext, "~> 1.0"},
       {:heroicons,
