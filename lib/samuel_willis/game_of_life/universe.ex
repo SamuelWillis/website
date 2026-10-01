@@ -34,13 +34,11 @@ defmodule SamuelWillis.GameOfLife.Universe do
     y_size = length(state)
     x_size = state |> List.first() |> length()
 
-    """
-    Moving to a live cell only pattern:
-    1. Take the data and place it into a structure, keeping only the live cells
-    2. cell status is determined by if the coord is in the cell or not
-    3. finding the next state is finding the neighbour's alive state
-        * This could be: add neighbnours to grid, find all the live ones, count them up, transform into grid of only alivers
-    """
+    # Moving to a live cell only pattern:
+    # 1. Take the data and place it into a structure, keeping only the live cells
+    # 2. cell status is determined by if the coord is in the cell or not
+    # 3. finding the next state is finding the neighbour's alive state
+    #     * This could be: add neighbnours to grid, find all the live ones, count them up, transform into grid of only alivers
 
     %__MODULE__{
       generation: 0,

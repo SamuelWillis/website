@@ -73,6 +73,7 @@ defmodule SamuelWillis.MixProject do
       {:makeup_elixir, ">= 0.0.0", runtime: false},
       {:makeup_erlang, ">= 0.0.0", runtime: false},
       {:makeup_html, ">= 0.0.0", runtime: false},
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
       {:nimble_publisher, "~> 2.0"},
       {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.4"},
@@ -86,8 +87,7 @@ defmodule SamuelWillis.MixProject do
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.5.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.0"},
-      {:tidewave, "~> 0.1", only: :dev}
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 
