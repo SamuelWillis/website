@@ -76,6 +76,7 @@ defmodule SamuelWillis.MixProject do
       {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
       {:nimble_publisher, "~> 2.0"},
       {:phoenix, "~> 1.8.1"},
+      {:tidewave, "~> 0.9", only: :dev},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 4.1"},
       {:phoenix_live_dashboard, "~> 0.9.0"},
